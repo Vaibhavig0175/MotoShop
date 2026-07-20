@@ -1,0 +1,55 @@
+﻿<section class="py-5">
+
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Featured Live Auctions</h2>
+        <p class="text-muted">
+            Explore some of the hottest vehicles currently available for bidding.
+        </p>
+    </div>
+
+    <div class="row g-4">
+
+        @for (int i = 1; i <= 3; i++)
+        {
+            <div class="col-lg-4">
+
+                <div class="card shadow-sm h-100">
+
+                    <img src="https://placehold.co/600x350"
+                         class="card-img-top"
+                         alt="Vehicle">
+
+                    <div class="card-body">
+
+                        <h5>Toyota Fortuner 2022</h5>
+
+                        <p class="text-muted">
+                            Diesel • Automatic • Pune
+                        </p>
+
+                        <h4 class="text-danger">
+                            ₹18,50,000
+                        </h4>
+
+                        <small class="text-success">
+                            12 Active Bids
+                        </small>
+
+                    </div>
+
+                    <div class="card-footer bg-white">
+
+                        <button class="btn btn-danger w-100">
+                            Bid Now
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</section>
