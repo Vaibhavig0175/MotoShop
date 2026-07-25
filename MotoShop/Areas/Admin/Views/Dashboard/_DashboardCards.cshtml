@@ -1,0 +1,46 @@
+﻿@model MotoShop.Areas.Admin.Models.DashboardViewModel;
+
+<div class="row">
+
+    @{
+        var cards = new[]
+        {
+        new { Title = "Vehicles", Value = Model.TotalVehicles.ToString(), Icon = "bi-car-front", Color = "primary" },
+        new { Title = "Live Auctions", Value = Model.LiveAuctions.ToString(), Icon = "bi-hammer", Color = "success" },
+        new { Title = "Buyers", Value = Model.TotalBuyers.ToString(), Icon = "bi-people", Color = "warning" },
+        new { Title = "Sellers", Value = Model.TotalSellers.ToString(), Icon = "bi-shop", Color = "danger" },
+        new { Title = "Revenue", Value = Model.Revenue.ToString("C0"), Icon = "bi-currency-rupee", Color = "info" },
+        new { Title = "Pending", Value = Model.PendingApprovals.ToString(), Icon = "bi-hourglass", Color = "secondary" }
+    };
+    }
+
+    @foreach (var card in cards)
+    {
+        <div class="col-xl-2 col-md-4 mb-3">
+
+            <div class="card border-start border-5 border-@card.Color">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <small class="text-muted">@card.Title</small>
+
+                            <h3>@card.Value</h3>
+
+                        </div>
+
+                        <i class="bi @card.Icon fs-1 text-@card.Color"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>

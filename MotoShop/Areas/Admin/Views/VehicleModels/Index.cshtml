@@ -1,0 +1,81 @@
+﻿@model IEnumerable<MotoShop.Models.VehicleModel>
+
+<h2>Vehicle Models</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">
+    Add Vehicle Model
+</a>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+
+        <tr>
+
+            <th>Category</th>
+
+            <th>Brand</th>
+
+            <th>Model</th>
+
+            <th>Description</th>
+
+            <th width="180">Actions</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.VehicleBrand?.VehicleCategory?.Name</td>
+
+                <td>@item.VehicleBrand?.Name</td>
+
+                <td>@item.Name</td>
+
+                <td>@item.Description</td>
+
+                <td>
+
+                    <a asp-action="Edit"
+                       asp-route-id="@item.Id"
+                       class="btn btn-warning btn-sm">
+                        Edit
+                    </a>
+
+                    <form asp-action="Delete"
+                          asp-route-id="@item.Id"
+                          method="post"
+                          style="display:inline;">
+
+                        @Html.AntiForgeryToken()
+
+                        <button class="btn btn-danger btn-sm"
+                                onclick="return confirm('Deactivate Model?')">
+
+                            Delete
+
+                        </button>
+
+                    </form>
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>

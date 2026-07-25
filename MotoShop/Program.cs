@@ -3,6 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using MotoShop.Data;
 using MotoShop.Data.Migrations;
 using MotoShop.Data.Seed;
+using MotoShop.Interfaces.Repositories;
+using MotoShop.Interfaces.Services;
+using MotoShop.Repositories;
+using MotoShop.Services;
+using MotoShop.Services.Admin;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +16,23 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<IVehicleCategoryRepository, VehicleCategoryRepository>();
+builder.Services.AddScoped<IVehicleCategoryService, VehicleCategoryService>(); 
+builder.Services.AddScoped<IVehicleBrandRepository, VehicleBrandRepository>();
+builder.Services.AddScoped<IVehicleBrandService, VehicleBrandService>();
+builder.Services.AddScoped<IVehicleModelRepository, VehicleModelRepository>();
+builder.Services.AddScoped<IVehicleModelService, VehicleModelService>();
+builder.Services.AddScoped<IFuelTypeRepository, FuelTypeRepository>();
+builder.Services.AddScoped<IFuelTypeService, FuelTypeService>();
+builder.Services.AddScoped<IVehicleColorRepository, VehicleColorRepository>();
+builder.Services.AddScoped<IVehicleColorService, VehicleColorService>();
+builder.Services.AddScoped<ITransmissionTypeRepository, TransmissionTypeRepository>();
+builder.Services.AddScoped<ITransmissionTypeService, TransmissionTypeService>(); 
+builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
+builder.Services.AddScoped<IVehicleService, VehicleService>();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {

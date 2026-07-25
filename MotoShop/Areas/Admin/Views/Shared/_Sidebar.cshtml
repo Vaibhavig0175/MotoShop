@@ -1,0 +1,203 @@
+﻿@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+}
+
+<div class="sidebar">
+
+    <div class="p-4">
+
+        <h3 class="fw-bold">
+
+            MotoShop
+
+        </h3>
+
+        <small class="text-secondary">
+
+            Administration
+
+        </small>
+
+    </div>
+
+    <hr />
+
+    <ul class="nav flex-column">
+
+        <li>
+
+            <a asp-area="Admin"
+               asp-controller="Dashboard"
+               asp-action="Index"
+               class="nav-link @(controller == "Dashboard" ? "active" : "")">
+
+                <i class="bi bi-speedometer2"></i>
+
+                Dashboard
+
+            </a>
+
+        </li>
+        <li class="nav-item">
+
+            <a asp-area="Admin"
+               asp-controller="VehicleApproval"
+               asp-action="Index"
+               class="nav-link">
+
+                <i class="bi bi-car-front-fill"></i>
+
+                Vehicle Approvals
+
+            </a>
+
+        </li>
+
+        <li class="mt-3">
+
+            <small class="text-uppercase px-3 text-secondary">
+
+                Masters
+
+            </small>
+
+        </li>
+
+        <li>
+
+            <a asp-area="Admin"
+               asp-controller="VehicleCategories"
+               asp-action="Index"
+               class="nav-link">
+
+                <i class="bi bi-grid"></i>
+
+                Vehicle Categories
+
+            </a>
+
+        </li>
+
+        <li class="nav-item">
+
+            <a asp-area="Admin"
+               asp-controller="VehicleBrands"
+               asp-action="Index"
+               class="nav-link">
+
+                <i class="bi bi-tags"></i>
+
+                Vehicle Brands
+
+            </a>
+
+        </li>
+
+        <li class="nav-item">
+            <a asp-area="Admin"
+               asp-controller="VehicleModels"
+               asp-action="Index"
+               class="nav-link">
+
+                <i class="bi bi-car-front"></i>
+
+                Vehicle Models
+
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a asp-area="Admin"
+               asp-controller="FuelTypes"
+               asp-action="Index"
+               class="nav-link">
+
+                <i class="bi bi-fuel-pump"></i>
+
+                Fuel Types
+
+            </a>
+        </li>
+        <li class="nav-item">
+            <a asp-area="Admin"
+               asp-controller="TransmissionTypes"
+               asp-action="Index"
+               class="nav-link">
+                <i class="bi bi-gear"></i>
+                Transmission Types
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a asp-area="Admin"
+               asp-controller="VehicleColors"
+               asp-action="Index"
+               class="nav-link">
+                <i class="bi bi-palette"></i>
+                Vehicle Colors
+            </a>
+        </li>
+
+        <li class="mt-3">
+
+            <small class="text-uppercase px-3 text-secondary">
+
+                Auctions
+
+            </small>
+
+        </li>
+
+        <li>
+
+            <a class="nav-link">
+
+                Live Auctions
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="nav-link">
+
+                Completed Auctions
+
+            </a>
+
+        </li>
+
+        <li class="mt-3">
+
+            <small class="text-uppercase px-3 text-secondary">
+
+                Users
+
+            </small>
+
+        </li>
+
+        <li>
+
+            <a class="nav-link">
+
+                Buyers
+
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="nav-link">
+
+                Sellers
+
+            </a>
+
+        </li>
+
+    </ul>
+
+</div>

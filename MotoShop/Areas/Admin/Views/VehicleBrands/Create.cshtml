@@ -1,0 +1,58 @@
+﻿@model MotoShop.Areas.Admin.Models.VehicleBrandViewModel
+
+<h3>Create Brand</h3>
+
+<form asp-action="Create">
+
+    <div asp-validation-summary="ModelOnly"></div>
+
+    <div class="mb-3">
+
+        <label asp-for="VehicleCategoryId"></label>
+
+        <select asp-for="VehicleCategoryId"
+                asp-items="Model.Categories"
+                class="form-select">
+
+            <option value="">Select Category</option>
+
+        </select>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label asp-for="Name"></label>
+
+        <input asp-for="Name"
+               class="form-control" />
+
+    </div>
+
+    <div class="mb-3">
+
+        <label asp-for="Description"></label>
+
+        <textarea asp-for="Description"
+                  class="form-control"></textarea>
+
+    </div>
+
+    <button class="btn btn-success">
+
+        Save
+
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+
+        Cancel
+
+    </a>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

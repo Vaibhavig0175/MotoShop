@@ -1,0 +1,62 @@
+﻿@model MotoShop.Models.TransmissionType
+
+@{
+    ViewData["Title"] = "Edit Transmission Type";
+}
+
+<h3>Edit Transmission Type</h3>
+
+<hr />
+
+<form asp-action="Edit" method="post">
+
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" asp-for="Id" />
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger"></div>
+
+    <div class="mb-3">
+
+        <label asp-for="Name"
+               class="form-label"></label>
+
+        <input asp-for="Name"
+               class="form-control" />
+
+        <span asp-validation-for="Name"
+              class="text-danger"></span>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label asp-for="Description"
+               class="form-label"></label>
+
+        <textarea asp-for="Description"
+                  class="form-control"
+                  rows="3"></textarea>
+
+    </div>
+
+    <button class="btn btn-success">
+
+        Update
+
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+
+        Cancel
+
+    </a>
+
+</form>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

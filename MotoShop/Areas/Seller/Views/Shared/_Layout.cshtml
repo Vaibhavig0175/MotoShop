@@ -1,0 +1,238 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using MotoShop.Data
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1" />
+
+    <title>@ViewData["Title"] - MotoShop Seller</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css" />
+
+    <style>
+
+            body {
+                background: #f5f7fb;
+                overflow-x: hidden;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 260px;
+                height: 100vh;
+                background: #212529;
+                color: white;
+                overflow-y: auto;
+                z-index: 1000;
+            }
+
+            .sidebar-header {
+                padding: 22px;
+                text-align: center;
+                font-size: 24px;
+                font-weight: bold;
+                border-bottom: 1px solid rgba(255,255,255,.1);
+            }
+
+                .sidebar-header a {
+                    color: white;
+                    text-decoration: none;
+                }
+
+            .sidebar a {
+                color: #ced4da;
+                display: block;
+                padding: 14px 22px;
+                text-decoration: none;
+                transition: .2s;
+            }
+
+                .sidebar a:hover {
+                    background: #0d6efd;
+                    color: white;
+                }
+
+                .sidebar a.active {
+                    background: #0d6efd;
+                    color: white;
+                }
+
+            .content {
+                margin-left: 260px;
+                min-height: 100vh;
+            }
+
+            .topbar {
+                background: white;
+                padding: 15px 25px;
+                border-bottom: 1px solid #dee2e6;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .page-content {
+                padding: 25px;
+            }
+
+            @@media(max-width:991px) {
+
+                .sidebar {
+                    width: 220px;
+                }
+
+                .content {
+                    margin-left: 220px;
+                }
+            }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <div class="sidebar-header">
+
+            <a asp-area=""
+               asp-controller="Home"
+               asp-action="Index">
+
+                🚗 MotoShop
+
+            </a>
+
+        </div>
+
+        <a asp-area="Seller"
+           asp-controller="Dashboard"
+           asp-action="Index">
+
+            <i class="bi bi-speedometer2"></i>
+
+            Dashboard
+
+        </a>
+
+        <a asp-area="Seller"
+           asp-controller="Vehicles"
+           asp-action="Index">
+
+            <i class="bi bi-car-front-fill"></i>
+
+            My Vehicles
+
+        </a>
+
+        <a asp-area="Seller"
+           asp-controller="Vehicles"
+           asp-action="Create">
+
+            <i class="bi bi-plus-circle-fill"></i>
+
+            Add Vehicle
+
+        </a>
+
+        <a href="#">
+
+            <i class="bi bi-hammer"></i>
+
+            My Auctions
+
+        </a>
+
+        <a href="#">
+
+            <i class="bi bi-currency-rupee"></i>
+
+            Bids
+
+        </a>
+
+        <a href="#">
+
+            <i class="bi bi-person-circle"></i>
+
+            Profile
+
+        </a>
+
+        <hr class="text-secondary" />
+
+        <form asp-area="Identity"
+              asp-page="/Account/Logout"
+              method="post">
+
+            <button class="btn btn-danger w-100 rounded-0">
+
+                <i class="bi bi-box-arrow-right"></i>
+
+                Logout
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <div class="content">
+
+        <div class="topbar">
+
+            <h4 class="mb-0">
+
+                Seller Portal
+
+            </h4>
+
+            <div>
+
+                <i class="bi bi-person-circle fs-4"></i>
+
+                <strong>
+
+                    @UserManager.GetUserName(User)
+
+                </strong>
+
+            </div>
+
+        </div>
+
+        <div class="page-content">
+
+            @RenderBody()
+
+        </div>
+
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+
+</html>

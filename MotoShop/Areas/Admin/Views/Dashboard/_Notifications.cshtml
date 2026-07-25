@@ -1,0 +1,298 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container-fluid">
+
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold">Dashboard</h2>
+            <p class="text-muted">
+                Welcome back, @User.Identity?.Name
+            </p>
+        </div>
+
+        <button class="btn btn-primary">
+            + Add Vehicle
+        </button>
+
+    </div>
+
+    <!-- KPI Cards -->
+
+    <div class="row">
+
+        <div class="col-md-3 mb-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <h6>Total Vehicles</h6>
+
+                    <h2>0</h2>
+
+                    <small class="text-success">
+                        +0 Today
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3 mb-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <h6>Live Auctions</h6>
+
+                    <h2>0</h2>
+
+                    <small class="text-success">
+                        No Auctions
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3 mb-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <h6>Registered Buyers</h6>
+
+                    <h2>0</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3 mb-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <h6>Verified Sellers</h6>
+
+                    <h2>0</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Charts + Activity -->
+
+    <div class="row">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+
+                    Revenue Overview
+
+                </div>
+
+                <div class="card-body">
+
+                    <canvas id="revenueChart"
+                            height="120"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+
+                    Recent Activities
+
+                </div>
+
+                <div class="card-body">
+
+                    <ul class="list-group list-group-flush">
+
+                        <li class="list-group-item">
+                            No activities found.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Tables -->
+
+    <div class="row mt-4">
+
+        <div class="col-lg-6">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+
+                    Pending Seller Approvals
+
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Name</th>
+
+                                <th>Business</th>
+
+                                <th>Status</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+
+                                <td colspan="3"
+                                    class="text-center">
+
+                                    No Records
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+
+                    Recent Vehicles
+
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Vehicle</th>
+
+                                <th>Seller</th>
+
+                                <th>Status</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+
+                                <td colspan="3"
+                                    class="text-center">
+
+                                    No Vehicles
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+        const ctx = document.getElementById('revenueChart');
+
+        new Chart(ctx, {
+
+            type: 'line',
+
+            data: {
+
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+
+                datasets: [{
+
+                    label: 'Revenue',
+
+                    data: [10, 25, 15, 40, 35, 55],
+
+                    fill: false,
+
+                    tension: .4
+
+                }]
+
+            }
+
+        });
+
+    </script>
+
+}

@@ -1,0 +1,107 @@
+﻿@model MotoShop.Areas.Admin.Models.DashboardViewModel;
+
+<div class="row">
+
+    <div class="col-xl-2 col-md-4 mb-4">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h6>Total Vehicles</h6>
+
+                <h2>@Model.TotalVehicles</h2>
+
+                <small class="text-success">
+
+                    +0 Today
+
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-2 col-md-4 mb-4">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h6>Live Auctions</h6>
+
+                <h2>@Model.LiveAuctions</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-2 col-md-4 mb-4">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h6>Buyers</h6>
+
+                <h2>@Model.TotalBuyers</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-2 col-md-4 mb-4">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h6>Sellers</h6>
+
+                <h2>@Model.TotalSellers</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-2 col-md-4 mb-4">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h6>Revenue</h6>
+
+                <h2>₹@Model.Revenue</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xl-2 col-md-4 mb-4">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <h6>Pending</h6>
+
+                <h2>@Model.PendingApprovals</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
