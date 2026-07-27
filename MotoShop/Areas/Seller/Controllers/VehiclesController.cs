@@ -7,6 +7,7 @@ using MotoShop.Enums;
 using MotoShop.Interfaces.Repositories;
 using MotoShop.Interfaces.Services;
 using MotoShop.Models;
+using MotoShop.Services;
 using MotoShop.ViewModels.Seller;
 
 namespace MotoShop.Areas.Seller.Controllers
@@ -22,6 +23,7 @@ namespace MotoShop.Areas.Seller.Controllers
         private readonly IFuelTypeService _fuelTypeService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWebHostEnvironment _environment;
+        private readonly INotificationService _notificationService;
 
         public VehiclesController(
             IVehicleService vehicleService,
@@ -30,7 +32,8 @@ namespace MotoShop.Areas.Seller.Controllers
             IVehicleModelService modelService,
             IFuelTypeService fuelTypeService,
             UserManager<ApplicationUser> userManager,
-            IWebHostEnvironment environment)
+            IWebHostEnvironment environment,
+            INotificationService notificationService)
         {
             _vehicleService = vehicleService;
             _categoryRepository = categoryRepository; 
@@ -39,6 +42,7 @@ namespace MotoShop.Areas.Seller.Controllers
             _fuelTypeService = fuelTypeService;
             _userManager = userManager;
             _environment = environment;
+            _notificationService = notificationService;
         }
 
         public async Task<IActionResult> Index()
@@ -91,6 +95,18 @@ namespace MotoShop.Areas.Seller.Controllers
             };
 
             await _vehicleService.AddAsync(vehicle);
+
+            var admin = await _userManager.GetUsersInRoleAsync("Admin");
+
+            foreach (var user in admin)
+            {
+                await _notificationService.CreateNotificationAsync(
+                    user.Id,
+                    "New Vehicle Submitted",
+                    "A seller has submitted a vehicle for approval.",
+                    NotificationType.Info,
+                    "/Admin/VehicleApproval");
+            }
 
             if (vm.Images != null && vm.Images.Any())
             {

@@ -2,6 +2,7 @@
 using MotoShop.Data;
 using MotoShop.Enums;
 using MotoShop.Interfaces.Repositories;
+using MotoShop.Interfaces.Services;
 using MotoShop.Models;
 
 namespace MotoShop.Repositories
@@ -10,9 +11,12 @@ namespace MotoShop.Repositories
     {
         private readonly ApplicationDbContext _context;
 
-        public VehicleRepository(ApplicationDbContext context)
+        public INotificationService _notificationService { get; }
+
+        public VehicleRepository(ApplicationDbContext context, INotificationService notificationService)
         {
             _context = context;
+            _notificationService = notificationService;
         }
 
         public async Task<List<Vehicle>> GetAllAsync()
@@ -135,6 +139,12 @@ namespace MotoShop.Repositories
             vehicle.ModifiedOn = DateTime.UtcNow;
 
             _context.Update(vehicle);
+            await _notificationService.CreateNotificationAsync(
+                                        vehicle.SellerId,
+                                        "Vehicle Approved",
+                                        "Congratulations! Your vehicle has been approved by the administrator.",
+                                        NotificationType.Success,
+                                        "/Seller/Vehicles");
 
             await _context.SaveChangesAsync();
         }
@@ -150,6 +160,13 @@ namespace MotoShop.Repositories
             vehicle.ModifiedOn = DateTime.UtcNow;
 
             _context.Vehicles.Update(vehicle);
+
+            await _notificationService.CreateNotificationAsync(
+                                        vehicle.SellerId,
+                                        "Vehicle Rejected",
+                                        $"Reason: {reason}",
+                                        NotificationType.Error,
+                                        "/Seller/Vehicles");
 
             await _context.SaveChangesAsync();
         }
