@@ -1,0 +1,139 @@
+﻿@model IEnumerable<MotoShop.Models.Notification>
+
+@{
+    ViewData["Title"] = "Notifications";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between mb-4">
+
+        <h2>
+
+            Notifications
+
+        </h2>
+
+        <a asp-action="MarkAllRead"
+           class="btn btn-primary">
+
+            Mark All Read
+
+        </a>
+
+    </div>
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <table class="table table-hover">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Type</th>
+
+                        <th>Title</th>
+
+                        <th>Message</th>
+
+                        <th>Date</th>
+
+                        <th></th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr class="@(!item.IsRead ? "table-warning" : "")">
+
+                            <td>
+
+                                @switch (item.Type)
+                                {
+                                    case NotificationType.Success:
+
+                                        <span class="badge bg-success">Success</span>
+
+                                        break;
+
+                                    case NotificationType.Warning:
+
+                                        <span class="badge bg-warning text-dark">Warning</span>
+
+                                        break;
+
+                                    case NotificationType.Error:
+
+                                        <span class="badge bg-danger">Error</span>
+
+                                        break;
+
+                                    default:
+
+                                        <span class="badge bg-info">Info</span>
+
+                                        break;
+                                }
+
+                            </td>
+
+                            <td>
+
+                                @item.Title
+
+                            </td>
+
+                            <td>
+
+                                @item.Message
+
+                            </td>
+
+                            <td>
+
+                                @item.CreatedOn.ToString("dd MMM yyyy HH:mm")
+
+                            </td>
+
+                            <td>
+
+                                @if (!item.IsRead)
+                                {
+                                    <a asp-action="MarkRead"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-sm btn-success">
+
+                                        Read
+
+                                    </a>
+                                }
+
+                                <a asp-action="Delete"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-sm btn-danger">
+
+                                    Delete
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

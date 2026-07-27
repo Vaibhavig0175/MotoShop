@@ -26,6 +26,7 @@ namespace MotoShop.Data
         public DbSet<VehicleImage> VehicleImages { get; set; } = default!;
         public DbSet<Auction> Auctions { get; set; } = default!;
         public DbSet<Bid> Bids { get; set; } = default!;
+        public DbSet<Notification> Notifications { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -96,6 +97,12 @@ namespace MotoShop.Data
                 .WithMany(x => x.Bids)
                 .HasForeignKey(x => x.BuyerId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Notification>()
+                .HasOne(x => x.User)
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
