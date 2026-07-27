@@ -1,0 +1,268 @@
+﻿@model MotoShop.Models.Auction
+
+@{
+    ViewData["Title"] = "Auction Details";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>
+
+            <i class="bi bi-hammer"></i>
+
+            Auction Details
+
+        </h2>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+
+            <i class="bi bi-arrow-left"></i>
+
+            Back
+
+        </a>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-dark text-white">
+
+                    <h5 class="mb-0">
+
+                        Vehicle Information
+
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    @if (Model.Vehicle?.Images != null &&
+                         Model.Vehicle.Images.Any())
+                    {
+                        <img src="@Model.Vehicle.Images.First().ImageUrl"
+                             class="img-fluid rounded mb-4"
+                             style="height:400px;width:100%;object-fit:cover;" />
+                    }
+                    else
+                    {
+                        <img src="~/images/no-image.png"
+                             class="img-fluid rounded mb-4"
+                             style="height:400px;width:100%;object-fit:cover;" />
+                    }
+
+                    <table class="table table-bordered">
+
+                        <tr>
+                            <th width="250">Title</th>
+                            <td>@Model.Vehicle?.Title</td>
+                        </tr>
+
+                        <tr>
+                            <th>Brand</th>
+                            <td>@Model.Vehicle?.VehicleBrand?.Name</td>
+                        </tr>
+
+                        <tr>
+                            <th>Model</th>
+                            <td>@Model.Vehicle?.VehicleModel?.Name</td>
+                        </tr>
+
+                        <tr>
+                            <th>Registration</th>
+                            <td>@Model.Vehicle?.RegistrationNumber</td>
+                        </tr>
+
+                        <tr>
+                            <th>Manufacturing Year</th>
+                            <td>@Model.Vehicle?.ManufacturingYear</td>
+                        </tr>
+
+                        <tr>
+                            <th>KM Driven</th>
+                            <td>@Model.Vehicle?.KilometersDriven</td>
+                        </tr>
+
+                        <tr>
+                            <th>Owners</th>
+                            <td>@Model.Vehicle?.Owners</td>
+                        </tr>
+
+                        <tr>
+                            <th>Fuel</th>
+                            <td>@Model.Vehicle?.FuelType?.Name</td>
+                        </tr>
+
+                        <tr>
+                            <th>Description</th>
+                            <td>@Model.Vehicle?.Description</td>
+                        </tr>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-primary text-white">
+
+                    Auction Information
+
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table">
+
+                        <tr>
+
+                            <th>Start Date</th>
+
+                            <td>
+
+                                @Model.StartDate.ToString("dd MMM yyyy")
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>Start Time</th>
+
+                            <td>
+
+                                @Model.StartDate.ToString("hh:mm tt")
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>End Date</th>
+
+                            <td>
+
+                                @Model.EndDate.ToString("dd MMM yyyy")
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>End Time</th>
+
+                            <td>
+
+                                @Model.EndDate.ToString("hh:mm tt")
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>Starting Price</th>
+
+                            <td>
+
+                                ₹ @Model.StartingPrice.ToString("N0")
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>Current Bid</th>
+
+                            <td class="fw-bold text-success">
+
+                                ₹ @Model.CurrentBid.ToString("N0")
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>Reserve Price</th>
+
+                            <td>
+
+                                ₹ @Model.ReservePrice?.ToString("N0")
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>Status</th>
+
+                            <td>
+
+                                @if (Model.IsClosed)
+                                {
+                                    <span class="badge bg-secondary">
+
+                                        Closed
+
+                                    </span>
+                                }
+                                else if (Model.StartDate > DateTime.Now)
+                                {
+                                    <span class="badge bg-info">
+
+                                        Upcoming
+
+                                    </span>
+                                }
+                                else if (Model.EndDate < DateTime.Now)
+                                {
+                                    <span class="badge bg-dark">
+
+                                        Completed
+
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">
+
+                                        Live
+
+                                    </span>
+                                }
+
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

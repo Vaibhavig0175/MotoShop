@@ -1,0 +1,27 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid mt-4">
+
+    <div class="row">
+
+        <div class="col-lg-3">
+
+            <partial name="_Sidebar" />
+
+        </div>
+
+        <div class="col-lg-9">
+
+            @RenderBody()
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @await RenderSectionAsync("Scripts", required: false)
+}

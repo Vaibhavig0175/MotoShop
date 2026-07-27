@@ -12,4 +12,5 @@ public class ApplicationUser : IdentityUser
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public SellerProfile? SellerProfile { get; set; }
+    public ICollection<Bid> Bids { get; set; } = new List<Bid>();
 }

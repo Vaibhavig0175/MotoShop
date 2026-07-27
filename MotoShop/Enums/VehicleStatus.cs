@@ -7,6 +7,7 @@
         Approved = 3,
         Rejected = 4,
         LiveAuction = 5,
-        Sold = 6
+        Sold = 6,
+        Pending = 7
     }
 }

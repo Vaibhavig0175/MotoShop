@@ -33,6 +33,11 @@ builder.Services.AddScoped<ITransmissionTypeRepository, TransmissionTypeReposito
 builder.Services.AddScoped<ITransmissionTypeService, TransmissionTypeService>(); 
 builder.Services.AddScoped<IVehicleRepository, VehicleRepository>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
+builder.Services.AddScoped<IAuctionRepository, AuctionRepository>();
+builder.Services.AddScoped<IAuctionService, AuctionService>();
+builder.Services.AddScoped<IBidRepository, BidRepository>();
+builder.Services.AddScoped<IBidService, BidService>();
+builder.Services.AddHostedService<AuctionClosingBackgroundService>();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {

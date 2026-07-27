@@ -1,0 +1,291 @@
+﻿@model IEnumerable<MotoShop.Models.Auction>
+
+@{
+    ViewData["Title"] = "Auctions";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold mb-0">
+                <i class="bi bi-hammer"></i>
+                Auctions
+            </h2>
+
+            <small class="text-muted">
+                Manage all vehicle auctions
+            </small>
+
+        </div>
+
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i>
+            Create Auction
+        </a>
+
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+
+            @TempData["Success"]
+
+            <button class="btn-close"
+                    data-bs-dismiss="alert"></button>
+
+        </div>
+    }
+
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-white">
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <h5 class="mb-0">
+
+                        Auction List
+
+                    </h5>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <input id="searchBox"
+                           class="form-control"
+                           placeholder="Search Auction..." />
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0"
+                   id="auctionTable">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th width="100">Image</th>
+
+                        <th>Vehicle</th>
+
+                        <th>Starting Price</th>
+
+                        <th>Current Bid</th>
+
+                        <th>Start</th>
+
+                        <th>End</th>
+
+                        <th>Status</th>
+
+                        <th width="220">Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        var now = DateTime.Now;
+
+                        string badge;
+
+                        string color;
+
+                        if (item.IsClosed)
+                        {
+                            badge = "Closed";
+                            color = "secondary";
+                        }
+                        else if (item.StartDate > now)
+                        {
+                            badge = "Upcoming";
+                            color = "info";
+                        }
+                        else if (item.EndDate < now)
+                        {
+                            badge = "Completed";
+                            color = "dark";
+                        }
+                        else
+                        {
+                            badge = "Live";
+                            color = "success";
+                        }
+
+                        <tr>
+
+                            <td>
+
+                                @if (item.Vehicle?.Images != null &&
+                                    item.Vehicle.Images.Any())
+                                {
+                                    <img src="@item.Vehicle.Images.First().ImageUrl"
+                                         width="80"
+                                         height="60"
+                                         class="rounded"
+                                         style="object-fit:cover;" />
+                                }
+                                else
+                                {
+                                    <img src="~/images/no-image.png"
+                                         width="80"
+                                         class="rounded" />
+                                }
+
+                            </td>
+
+                            <td>
+
+                                <strong>
+
+                                    @item.Vehicle?.VehicleBrand?.Name
+                                    @item.Vehicle?.VehicleModel?.Name
+
+                                </strong>
+
+                                <br />
+
+                                <small class="text-muted">
+
+                                    @item.Vehicle?.Title
+
+                                </small>
+
+                            </td>
+
+                            <td>
+
+                                ₹ @item.StartingPrice.ToString("N0")
+
+                            </td>
+
+                            <td>
+
+                                <strong class="text-success">
+
+                                    ₹ @item.CurrentBid.ToString("N0")
+
+                                </strong>
+
+                            </td>
+
+                            <td>
+
+                                @item.StartDate.ToString("dd MMM yyyy")
+
+                                <br />
+
+                                <small>
+
+                                    @item.StartDate.ToString("hh:mm tt")
+
+                                </small>
+
+                            </td>
+
+                            <td>
+
+                                @item.EndDate.ToString("dd MMM yyyy")
+
+                                <br />
+
+                                <small>
+
+                                    @item.EndDate.ToString("hh:mm tt")
+
+                                </small>
+
+                            </td>
+
+                            <td>
+
+                                <span class="badge bg-@color">
+
+                                    @badge
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <a asp-action="Details"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-info btn-sm">
+
+                                    <i class="bi bi-eye"></i>
+
+                                </a>
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-warning btn-sm">
+
+                                    <i class="bi bi-pencil-square"></i>
+
+                                </a>
+
+                                <a asp-action="Delete"
+                                   asp-route-id="@item.Id"
+                                   class="btn btn-danger btn-sm">
+
+                                    <i class="bi bi-trash"></i>
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script>
+
+        document.getElementById("searchBox")
+            .addEventListener("keyup", function() {
+
+                let value = this.value.toLowerCase();
+
+                let rows = document.querySelectorAll("#auctionTable tbody tr");
+
+                rows.forEach(function(row) {
+
+                    row.style.display =
+                        row.innerText.toLowerCase().includes(value)
+                            ? ""
+                            : "none";
+
+                });
+
+            });
+
+    </script>
+
+}

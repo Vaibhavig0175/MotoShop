@@ -33,5 +33,6 @@ namespace MotoShop.Models
 
         [ForeignKey(nameof(WinnerId))]
         public ApplicationUser? Winner { get; set; }
+        public ICollection<Bid> Bids { get; set; } = new List<Bid>();
     }
 }
