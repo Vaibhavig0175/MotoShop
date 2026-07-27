@@ -1,0 +1,283 @@
+﻿@model MotoShop.Models.Vehicle
+
+@{
+    ViewData["Title"] = "Vehicle Details";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>
+            <i class="bi bi-car-front-fill"></i>
+            Vehicle Details
+        </h2>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i>
+            Back
+        </a>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow mb-4">
+
+                <div class="card-header bg-dark text-white">
+
+                    <h5 class="mb-0">
+                        @Model.VehicleBrand?.Name @Model.VehicleModel?.Name
+                    </h5>
+
+                </div>
+
+                <div class="card-body">
+
+                    @if (Model.Images != null && Model.Images.Any())
+                    {
+                        <div id="vehicleCarousel"
+                             class="carousel slide mb-4"
+                             data-bs-ride="carousel">
+
+                            <div class="carousel-inner">
+
+                                @{
+                                    var first = true;
+                                }
+
+                                @foreach (var img in Model.Images)
+                                {
+                                    <div class="carousel-item @(first ? "active" : "")">
+
+                                        <img src="@img.ImageUrl"
+                                             class="d-block w-100 rounded"
+                                             style="height:450px;object-fit:cover;" />
+
+                                    </div>
+
+                                    first = false;
+                                }
+
+                            </div>
+
+                            <button class="carousel-control-prev"
+                                    type="button"
+                                    data-bs-target="#vehicleCarousel"
+                                    data-bs-slide="prev">
+
+                                <span class="carousel-control-prev-icon"></span>
+
+                            </button>
+
+                            <button class="carousel-control-next"
+                                    type="button"
+                                    data-bs-target="#vehicleCarousel"
+                                    data-bs-slide="next">
+
+                                <span class="carousel-control-next-icon"></span>
+
+                            </button>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <img src="~/images/no-image.png"
+                             class="img-fluid rounded mb-4" />
+                    }
+
+                    <table class="table table-bordered">
+
+                        <tr>
+                            <th width="250">Title</th>
+                            <td>@Model.Title</td>
+                        </tr>
+
+                        <tr>
+                            <th>Category</th>
+                            <td>@Model.VehicleCategory?.Name</td>
+                        </tr>
+
+                        <tr>
+                            <th>Brand</th>
+                            <td>@Model.VehicleBrand?.Name</td>
+                        </tr>
+
+                        <tr>
+                            <th>Model</th>
+                            <td>@Model.VehicleModel?.Name</td>
+                        </tr>
+
+                        <tr>
+                            <th>Fuel Type</th>
+                            <td>@Model.FuelType?.Name</td>
+                        </tr>
+
+                        <tr>
+                            <th>Transmission</th>
+                            <td>@Model.Transmission</td>
+                        </tr>
+
+                        <tr>
+                            <th>Color</th>
+                            <td>@Model.Color</td>
+                        </tr>
+
+                        <tr>
+                            <th>Registration Number</th>
+                            <td>@Model.RegistrationNumber</td>
+                        </tr>
+
+                        <tr>
+                            <th>Manufacturing Year</th>
+                            <td>@Model.ManufacturingYear</td>
+                        </tr>
+
+                        <tr>
+                            <th>KM Driven</th>
+                            <td>@Model.KilometersDriven</td>
+                        </tr>
+
+                        <tr>
+                            <th>Owners</th>
+                            <td>@Model.Owners</td>
+                        </tr>
+
+                        <tr>
+                            <th>Starting Price</th>
+                            <td>₹ @Model.StartingPrice.ToString("N0")</td>
+                        </tr>
+
+                        <tr>
+                            <th>Reserve Price</th>
+                            <td>₹ @Model.ReservePrice?.ToString("N0")</td>
+                        </tr>
+
+                        <tr>
+                            <th>Description</th>
+                            <td>@Model.Description</td>
+                        </tr>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <div class="card shadow mb-4">
+
+                <div class="card-header bg-primary text-white">
+
+                    Seller Information
+
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table">
+
+                        <tr>
+                            <th>Name</th>
+                            <td>@Model.Seller?.FullName</td>
+                        </tr>
+
+                        <tr>
+                            <th>Email</th>
+                            <td>@Model.Seller?.Email</td>
+                        </tr>
+
+                        <tr>
+                            <th>Submitted</th>
+                            <td>@Model.CreatedOn.ToString("dd MMM yyyy")</td>
+                        </tr>
+
+                        <tr>
+                            <th>Status</th>
+                            <td>
+
+                                <span class="badge bg-warning">
+
+                                    @Model.Status
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            <div class="card shadow">
+
+                <div class="card-header bg-success text-white">
+
+                    Approval Actions
+
+                </div>
+
+                <div class="card-body">
+
+                    <form asp-action="Approve"
+                          method="post">
+
+                        <input type="hidden"
+                               name="id"
+                               value="@Model.Id" />
+
+                        <button class="btn btn-success w-100 mb-3">
+
+                            <i class="bi bi-check-circle-fill"></i>
+
+                            Approve Vehicle
+
+                        </button>
+
+                    </form>
+
+                    <form asp-action="Reject"
+                          method="post">
+
+                        <input type="hidden"
+                               name="id"
+                               value="@Model.Id" />
+
+                        <div class="mb-3">
+
+                            <textarea name="reason"
+                                      class="form-control"
+                                      rows="5"
+                                      placeholder="Enter rejection reason..."
+                                      required></textarea>
+
+                        </div>
+
+                        <button class="btn btn-danger w-100">
+
+                            <i class="bi bi-x-circle-fill"></i>
+
+                            Reject Vehicle
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

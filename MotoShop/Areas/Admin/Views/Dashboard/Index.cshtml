@@ -1,47 +1,73 @@
-﻿@{
-    ViewData["Title"] = "Admin Dashboard";
+﻿@model MotoShop.Areas.Admin.Models.DashboardViewModel;
+
+@{
+    ViewData["Title"] = " Admin Dashboard";
 }
 
-<div class="container mt-4">
+<div class="container-fluid">
 
-    <h2 class="mb-4">Admin Dashboard</h2>
+    <partial name="_DashboardCards" model="Model"/>
 
-    <div class="row g-4">
+    <div class="row mt-4">
 
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5>Total Users</h5>
-                    <h2>0</h2>
-                </div>
-            </div>
+        <div class="col-lg-8">
+
+            <partial name="_RevenueChart"/>
+
         </div>
 
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5>Buyers</h5>
-                    <h2>0</h2>
-                </div>
-            </div>
+        <div class="col-lg-4">
+
+            <partial name="_AuctionChart"/>
+
         </div>
 
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5>Sellers</h5>
-                    <h2>0</h2>
-                </div>
-            </div>
+    </div>
+
+    <div class="row mt-4">
+
+        <div class="col-lg-8">
+
+            <partial name="_LatestAuctions"/>
+
         </div>
 
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5>Vehicles</h5>
-                    <h2>0</h2>
-                </div>
-            </div>
+        <div class="col-lg-4">
+
+            <partial name="_RecentActivities"/>
+
+        </div>
+
+    </div>
+
+    <div class="row mt-4">
+
+        <div class="col-lg-6">
+
+            <partial name="_RecentVehicles"/>
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <partial name="_RecentUsers"/>
+
+        </div>
+
+    </div>
+
+    <div class="row mt-4">
+
+        <div class="col-lg-6">
+
+            <partial name="_QuickActions"/>
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <partial name="_SystemStatus"/>
+
         </div>
 
     </div>

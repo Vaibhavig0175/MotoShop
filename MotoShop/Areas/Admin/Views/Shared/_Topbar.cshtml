@@ -1,0 +1,82 @@
+﻿<nav class="navbar navbar-expand bg-white shadow-sm px-4">
+
+    <div class="container-fluid">
+
+        <h4 class="mb-0">
+
+            @ViewData["Title"]
+
+        </h4>
+
+        <div class="ms-auto d-flex align-items-center">
+
+            <button class="btn btn-light position-relative me-3">
+
+                <i class="bi bi-bell"></i>
+
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+
+                    3
+
+                </span>
+
+            </button>
+
+            <div class="dropdown">
+
+                <button class="btn btn-outline-secondary dropdown-toggle"
+                        data-bs-toggle="dropdown">
+
+                    @User.Identity?.Name
+
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-end">
+
+                    <li>
+
+                        <a class="dropdown-item">
+
+                            My Profile
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a class="dropdown-item">
+
+                            Settings
+
+                        </a>
+
+                    </li>
+
+                    <li><hr /></li>
+
+                    <li>
+
+                        <form asp-area="Identity"
+                              asp-page="/Account/Logout"
+                              method="post">
+
+                            <button class="dropdown-item">
+
+                                Logout
+
+                            </button>
+
+                        </form>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</nav>

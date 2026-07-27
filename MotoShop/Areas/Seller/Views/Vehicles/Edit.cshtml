@@ -1,0 +1,216 @@
+﻿@model MotoShop.Areas.Seller.Models.AddVehicleViewModel
+@using MotoShop.Enums
+
+@{
+    ViewData["Title"] = "Edit Vehicle";
+}
+
+<form asp-action="Edit"
+      method="post"
+      enctype="multipart/form-data">
+
+    <input asp-for="Id" type="hidden" />
+
+    <div class="card shadow">
+
+        <div class="card-header">
+
+            <h4>Edit Vehicle</h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <div asp-validation-summary="All"
+                 class="text-danger mb-3"></div>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <label asp-for="Title"></label>
+
+                    <input asp-for="Title"
+                           class="form-control" />
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label>Category</label>
+
+                    <select asp-for="VehicleCategoryId"
+                            asp-items="Model.Categories"
+                            class="form-select">
+
+                        <option value="">Select</option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label>Brand</label>
+
+                    <select asp-for="VehicleBrandId"
+                            asp-items="Model.Brands"
+                            class="form-select">
+
+                        <option value="">Select</option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label>Model</label>
+
+                    <select asp-for="VehicleModelId"
+                            asp-items="Model.Models"
+                            class="form-select">
+
+                        <option value="">Select</option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label>Fuel</label>
+
+                    <select asp-for="FuelTypeId"
+                            asp-items="Model.FuelTypes"
+                            class="form-select">
+
+                        <option value="">Select</option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label asp-for="Transmission"></label>
+
+                    <input asp-for="Transmission"
+                           class="form-control" />
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label asp-for="Color"></label>
+
+                    <input asp-for="Color"
+                           class="form-control" />
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label asp-for="RegistrationNumber"></label>
+
+                    <input asp-for="RegistrationNumber"
+                           class="form-control" />
+
+                </div>
+
+                <div class="col-md-4 mb-3">
+
+                    <label asp-for="ManufacturingYear"></label>
+
+                    <input asp-for="ManufacturingYear"
+                           class="form-control" />
+
+                </div>
+
+                <div class="col-md-4 mb-3">
+
+                    <label asp-for="KilometersDriven"></label>
+
+                    <input asp-for="KilometersDriven"
+                           class="form-control" />
+
+                </div>
+
+                <div class="col-md-4 mb-3">
+
+                    <label asp-for="Owners"></label>
+
+                    <input asp-for="Owners"
+                           class="form-control" />
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label asp-for="StartingPrice"></label>
+
+                    <input asp-for="StartingPrice"
+                           class="form-control" />
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label asp-for="ReservePrice"></label>
+
+                    <input asp-for="ReservePrice"
+                           class="form-control" />
+
+                </div>
+
+                <div class="col-12 mb-3">
+
+                    <label>Description</label>
+
+                    <textarea asp-for="Description"
+                              rows="5"
+                              class="form-control"></textarea>
+
+                </div>
+
+                <div class="col-12 mb-4">
+
+                    <label>Upload New Images</label>
+
+                    <input asp-for="Images"
+                           type="file"
+                           multiple
+                           class="form-control" />
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card-footer text-end">
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+
+                Cancel
+
+            </a>
+
+            <button class="btn btn-primary">
+
+                Update Vehicle
+
+            </button>
+
+        </div>
+
+    </div>
+
+</form>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

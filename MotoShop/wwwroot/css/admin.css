@@ -1,0 +1,62 @@
+:root {
+    --sidebar-bg: #1f2937;
+    --sidebar-hover: #374151;
+    --sidebar-active: #2563eb;
+    --topbar: #ffffff;
+    --page-bg: #f3f4f6;
+    --card: #ffffff;
+    --primary: #2563eb;
+    --success: #16a34a;
+    --warning: #f59e0b;
+    --danger: #dc2626;
+    --text: #111827;
+}
+
+body {
+    background: var(--page-bg);
+    font-family: 'Segoe UI',sans-serif;
+}
+
+.admin-wrapper {
+    display: flex;
+}
+
+.sidebar {
+    width: 270px;
+    min-height: 100vh;
+    background: var(--sidebar-bg);
+    position: fixed;
+    left: 0;
+    top: 0;
+    color: white;
+}
+
+.main {
+    margin-left: 270px;
+    width: calc(100% - 270px);
+}
+
+.content {
+    padding: 30px;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 5px 12px rgba(0,0,0,.08);
+}
+
+.sidebar .nav-link {
+    color: #d1d5db;
+    margin: 5px 12px;
+    border-radius: 8px;
+}
+
+    .sidebar .nav-link:hover {
+        background: var(--sidebar-hover);
+    }
+
+    .sidebar .nav-link.active {
+        background: var(--sidebar-active);
+        color: white;
+    }

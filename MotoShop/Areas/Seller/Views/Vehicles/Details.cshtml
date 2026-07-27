@@ -1,0 +1,187 @@
+﻿@model MotoShop.Models.Vehicle
+@using MotoShop.Enums
+
+@{
+    ViewData["Title"] = "Vehicle Details";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between mb-4">
+
+        <h2>Vehicle Details</h2>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Back
+        </a>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-lg-8">
+
+            @if (Model.Images != null && Model.Images.Any())
+            {
+                <div id="carouselVehicle"
+                     class="carousel slide mb-4"
+                     data-bs-ride="carousel">
+
+                    <div class="carousel-inner">
+
+                        @{
+                            bool first = true;
+                        }
+
+                        @foreach (var image in Model.Images)
+                        {
+                            <div class="carousel-item @(first ? "active" : "")">
+
+                                <img src="@image.ImageUrl"
+                                     class="d-block w-100 rounded"
+                                     style="height:450px;object-fit:cover;" />
+
+                            </div>
+
+                            first = false;
+                        }
+
+                    </div>
+
+                    <button class="carousel-control-prev"
+                            type="button"
+                            data-bs-target="#carouselVehicle"
+                            data-bs-slide="prev">
+
+                        <span class="carousel-control-prev-icon"></span>
+
+                    </button>
+
+                    <button class="carousel-control-next"
+                            type="button"
+                            data-bs-target="#carouselVehicle"
+                            data-bs-slide="next">
+
+                        <span class="carousel-control-next-icon"></span>
+
+                    </button>
+
+                </div>
+            }
+
+            <table class="table table-bordered">
+
+                <tr>
+                    <th width="250">Title</th>
+                    <td>@Model.Title</td>
+                </tr>
+
+                <tr>
+                    <th>Category</th>
+                    <td>@Model.VehicleCategory?.Name</td>
+                </tr>
+
+                <tr>
+                    <th>Brand</th>
+                    <td>@Model.VehicleBrand?.Name</td>
+                </tr>
+
+                <tr>
+                    <th>Model</th>
+                    <td>@Model.VehicleModel?.Name</td>
+                </tr>
+
+                <tr>
+                    <th>Fuel Type</th>
+                    <td>@Model.FuelType?.Name</td>
+                </tr>
+
+                <tr>
+                    <th>Transmission</th>
+                    <td>@Model.Transmission</td>
+                </tr>
+
+                <tr>
+                    <th>Color</th>
+                    <td>@Model.Color</td>
+                </tr>
+
+                <tr>
+                    <th>Registration No.</th>
+                    <td>@Model.RegistrationNumber</td>
+                </tr>
+
+                <tr>
+                    <th>Manufacturing Year</th>
+                    <td>@Model.ManufacturingYear</td>
+                </tr>
+
+                <tr>
+                    <th>KM Driven</th>
+                    <td>@Model.KilometersDriven</td>
+                </tr>
+
+                <tr>
+                    <th>Owners</th>
+                    <td>@Model.Owners</td>
+                </tr>
+
+                <tr>
+                    <th>Starting Price</th>
+                    <td>₹ @Model.StartingPrice</td>
+                </tr>
+
+                <tr>
+                    <th>Reserve Price</th>
+                    <td>₹ @Model.ReservePrice</td>
+                </tr>
+
+                <tr>
+                    <th>Description</th>
+                    <td>@Model.Description</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+        <div class="col-lg-4">
+
+            <div class="card shadow">
+
+                <div class="card-header">
+
+                    Vehicle Status
+
+                </div>
+
+                <div class="card-body">
+
+                    <h5>
+
+                        @Model.Status
+
+                    </h5>
+
+                    @if (Model.Status == VehicleStatus.Rejected)
+                    {
+                        <div class="alert alert-danger">
+
+                            <strong>Reason</strong>
+
+                            <hr />
+
+                            @Model.RejectionReason
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

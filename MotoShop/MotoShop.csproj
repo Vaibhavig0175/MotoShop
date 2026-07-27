@@ -20,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Buyer\Models\" />
     <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\uploads\vehicles\" />
   </ItemGroup>
 
 </Project>

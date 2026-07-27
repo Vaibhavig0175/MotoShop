@@ -1,0 +1,230 @@
+﻿@model IEnumerable<MotoShop.Models.Auction>
+
+@{
+    ViewData["Title"] = "Live Auctions";
+    Layout = "~/Areas/Buyer/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>
+
+            <i class="bi bi-hammer"></i>
+
+            Live Vehicle Auctions
+
+        </h2>
+
+    </div>
+
+    <div class="row mb-4">
+
+        <div class="col-md-6">
+
+            <input type="text"
+                   id="searchBox"
+                   class="form-control"
+                   placeholder="Search vehicle..." />
+
+        </div>
+
+        <div class="col-md-3">
+
+            <select id="sortBy"
+                    class="form-select">
+
+                <option value="">Sort By</option>
+
+                <option value="price">
+
+                    Highest Bid
+
+                </option>
+
+                <option value="date">
+
+                    Ending Soon
+
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+    <div class="row" id="auctionContainer">
+
+        @foreach (var item in Model)
+        {
+            var image = item.Vehicle?.Images?.FirstOrDefault()?.ImageUrl
+                        ?? "/images/no-image.png";
+
+            <div class="col-lg-4 mb-4 auction-card">
+
+                <div class="card shadow h-100">
+
+                    <img src="@image"
+                         class="card-img-top"
+                         style="height:230px;object-fit:cover;" />
+
+                    <div class="card-body">
+
+                        <h5 class="card-title">
+
+                            @item.Vehicle?.VehicleBrand?.Name
+                            @item.Vehicle?.VehicleModel?.Name
+
+                        </h5>
+
+                        <p class="text-muted">
+
+                            @item.Vehicle?.ManufacturingYear
+
+                        </p>
+
+                        <table class="table table-sm">
+
+                            <tr>
+
+                                <td>Current Bid</td>
+
+                                <td>
+
+                                    <strong class="text-success">
+
+                                        ₹ @item.CurrentBid.ToString("N0")
+
+                                    </strong>
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>Starting Price</td>
+
+                                <td>
+
+                                    ₹ @item.StartingPrice.ToString("N0")
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>Ends</td>
+
+                                <td>
+
+                                    @item.EndDate.ToString("dd MMM yyyy")
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>Time Left</td>
+
+                                <td>
+
+                                    <span class="countdown"
+                                          data-date="@item.EndDate.ToString("yyyy-MM-ddTHH:mm:ss")">
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                    <div class="card-footer bg-white">
+
+                        <a asp-action="Details"
+                           asp-route-id="@item.Id"
+                           class="btn btn-primary w-100">
+
+                            <i class="bi bi-eye-fill"></i>
+
+                            View Auction
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script>
+
+        const searchBox=document.getElementById("searchBox");
+
+        searchBox.addEventListener("keyup",function(){
+
+            let value=this.value.toLowerCase();
+
+            document.querySelectorAll(".auction-card").forEach(card=>{
+
+                let text=card.innerText.toLowerCase();
+
+                card.style.display=text.includes(value)?"":"none";
+
+            });
+
+        });
+
+        function updateCountdown(){
+
+            document.querySelectorAll(".countdown").forEach(function(item){
+
+                const end=new Date(item.dataset.date);
+
+                const now=new Date();
+
+                const diff=end-now;
+
+                if(diff<=0){
+
+                    item.innerHTML="<span class='badge bg-danger'>Closed</span>";
+
+                    return;
+
+                }
+
+                const d=Math.floor(diff/(1000*60*60*24));
+
+                const h=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+
+                const m=Math.floor((diff%(1000*60*60))/60000);
+
+                const s=Math.floor((diff%(60000))/1000);
+
+                item.innerHTML=d+"d "+h+"h "+m+"m "+s+"s";
+
+            });
+
+        }
+
+        updateCountdown();
+
+        setInterval(updateCountdown,1000);
+
+    </script>
+
+}

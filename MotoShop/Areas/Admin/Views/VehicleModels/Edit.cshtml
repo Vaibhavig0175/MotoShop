@@ -1,0 +1,49 @@
+﻿@model MotoShop.Areas.Admin.Models.VehicleModelViewModel
+
+<h3>Edit Vehicle Model</h3>
+
+<form asp-action="Edit" method="post">
+
+    <div asp-validation-summary="ModelOnly"></div>
+
+    <div class="mb-3">
+
+        <label asp-for="VehicleBrandId"></label>
+
+        <select asp-for="VehicleBrandId"
+                asp-items="Model.Brands"
+                class="form-select">
+
+            <option value="">Select Brand</option>
+
+        </select>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label asp-for="Name"></label>
+
+        <input type="hidden" asp-for="Id" />
+
+    </div>
+
+    <div class="mb-3">
+
+        <label asp-for="Description"></label>
+
+        <textarea asp-for="Description"
+                  class="form-control"></textarea>
+
+    </div>
+
+    <button class="btn btn-success">Save</button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">Cancel</a>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
