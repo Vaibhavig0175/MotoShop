@@ -40,6 +40,7 @@ builder.Services.AddScoped<IBidService, BidService>();
 builder.Services.AddHostedService<AuctionClosingBackgroundService>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddSignalR();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
@@ -94,5 +95,7 @@ using (var scope = app.Services.CreateScope())
     await RoleSeeder.SeedRolesAsync(services);
     await AdminSeeder.SeedAdminAsync(services);
 }
+
+app.MapHub<MotoShop.Hubs.AuctionHub>("/auctionHub");
 
 app.Run();

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using MotoShop.Data;
 using MotoShop.Interfaces.Services;
 using MotoShop.Models;
+using Microsoft.AspNetCore.SignalR;
+using MotoShop.Hubs;
 
 namespace MotoShop.Areas.Buyer.Controllers
 {
@@ -14,15 +16,18 @@ namespace MotoShop.Areas.Buyer.Controllers
         private readonly IAuctionService _auctionService;
         private readonly IBidService _bidService;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHubContext<AuctionHub> _hub;
 
         public AuctionsController(
             IAuctionService auctionService,
             IBidService bidService,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IHubContext<AuctionHub> hub)
         {
             _auctionService = auctionService;
             _bidService = bidService;
             _userManager = userManager;
+            _hub = hub;
         }
 
         //---------------------------------------------------
@@ -121,6 +126,18 @@ namespace MotoShop.Areas.Buyer.Controllers
             };
 
             await _bidService.AddAsync(bid);
+
+            await _hub.Clients
+                .Group($"Auction-{auction.Id}")
+                .SendAsync(
+                    "ReceiveBid",
+                    new
+                    {
+                        AuctionId = auction.Id,
+                        Amount = bid.Amount,
+                        Buyer = buyer.FullName,
+                        Time = bid.CreatedOn.ToString("HH:mm:ss")
+                    });
 
             auction.CurrentBid = amount;
 
