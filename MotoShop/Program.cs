@@ -40,6 +40,7 @@ builder.Services.AddScoped<IBidService, BidService>();
 builder.Services.AddHostedService<AuctionClosingBackgroundService>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddSignalR();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>

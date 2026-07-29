@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MotoShop.Data;
 using MotoShop.Enums;
+using MotoShop.Interfaces.Services;
 
 namespace MotoShop.Areas.Admin.Controllers
 {
@@ -13,11 +14,13 @@ namespace MotoShop.Areas.Admin.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IInvoiceService _invoiceService;
 
-        public PaymentsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public PaymentsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager,IInvoiceService invoiceService)
         {
             _context = context;
             _userManager = userManager;
+            _invoiceService = invoiceService;
         }
 
         public async Task<IActionResult> Index(string search)
