@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using MotoShop.Data;
 using MotoShop.Enums;
 using MotoShop.Interfaces.Repositories;
@@ -24,6 +25,8 @@ namespace MotoShop.Areas.Seller.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWebHostEnvironment _environment;
         private readonly INotificationService _notificationService;
+        private readonly ApplicationDbContext _context;
+
 
         public VehiclesController(
             IVehicleService vehicleService,
@@ -33,7 +36,8 @@ namespace MotoShop.Areas.Seller.Controllers
             IFuelTypeService fuelTypeService,
             UserManager<ApplicationUser> userManager,
             IWebHostEnvironment environment,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            ApplicationDbContext context)
         {
             _vehicleService = vehicleService;
             _categoryRepository = categoryRepository; 
@@ -43,6 +47,7 @@ namespace MotoShop.Areas.Seller.Controllers
             _userManager = userManager;
             _environment = environment;
             _notificationService = notificationService;
+            _context = context;
         }
 
         public async Task<IActionResult> Index()
@@ -238,6 +243,27 @@ namespace MotoShop.Areas.Seller.Controllers
                     Text = x.Name,
                     Value = x.Id.ToString()
                 });
+        }
+        public async Task<IActionResult> SoldVehicles()
+        {
+            var sellerId = _userManager.GetUserId(User);
+
+            var auctions = await _context.Auctions
+                .Include(a => a.Vehicle)
+                    .ThenInclude(v => v.VehicleBrand)
+                .Include(a => a.Vehicle)
+                    .ThenInclude(v => v.VehicleModel)
+                .Include(a => a.Vehicle)
+                    .ThenInclude(v => v.Images)
+                .Include(a => a.Winner)
+                .Where(a =>
+                    a.Vehicle.SellerId == sellerId &&
+                    a.Status == AuctionStatus.Closed &&
+                    a.WinnerId != null)
+                .OrderByDescending(a => a.ClosedOn)
+                .ToListAsync();
+
+            return View(auctions);
         }
     }
 }

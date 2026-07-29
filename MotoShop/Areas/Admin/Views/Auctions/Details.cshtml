@@ -1,4 +1,5 @@
-﻿@model MotoShop.Models.Auction
+﻿@using MotoShop.Enums
+@model MotoShop.Models.Auction;
 
 @{
     ViewData["Title"] = "Auction Details";
@@ -8,102 +9,189 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
 
-        <h2>
-
-            <i class="bi bi-hammer"></i>
+        <h2 class="fw-bold">
 
             Auction Details
 
         </h2>
 
-        <a asp-action="Index"
-           class="btn btn-secondary">
+        <div>
 
-            <i class="bi bi-arrow-left"></i>
+            <a asp-action="Edit"
+               asp-route-id="@Model.Id"
+               class="btn btn-warning">
 
-            Back
+                <i class="bi bi-pencil"></i>
 
-        </a>
+                Edit
+
+            </a>
+
+            @if (Model.Status == AuctionStatus.Upcoming)
+            {
+                <a asp-action="Start"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-success">
+
+                    <i class="bi bi-play-fill"></i>
+
+                    Start Auction
+
+                </a>
+            }
+            @if (Model.Status == AuctionStatus.Live)
+            {
+                <a asp-action="Close"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-danger">
+
+                    <i class="bi bi-stop-fill"></i>
+
+                    Close Auction
+
+                </a>
+            }
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+
+                Back
+
+            </a>
+
+        </div>
 
     </div>
 
     <div class="row">
 
+        <!-- LEFT -->
+
         <div class="col-lg-8">
 
-            <div class="card shadow">
+            <!-- Gallery -->
 
-                <div class="card-header bg-dark text-white">
+            <div class="card shadow-sm mb-4">
 
-                    <h5 class="mb-0">
+                <div class="card-header">
 
-                        Vehicle Information
-
-                    </h5>
+                    Vehicle Images
 
                 </div>
 
                 <div class="card-body">
 
-                    @if (Model.Vehicle?.Images != null &&
-                         Model.Vehicle.Images.Any())
+                    @if (Model.Vehicle.Images.Any())
                     {
-                        <img src="@Model.Vehicle.Images.First().ImageUrl"
-                             class="img-fluid rounded mb-4"
-                             style="height:400px;width:100%;object-fit:cover;" />
+                        <div class="row">
+
+                            @foreach (var img in Model.Vehicle.Images)
+                            {
+                                <div class="col-md-4 mb-3">
+
+                                    <img src="@img.ImageUrl"
+                                         class="img-fluid rounded shadow-sm"
+                                         style="height:220px;width:100%;object-fit:cover;" />
+
+                                </div>
+                            }
+
+                        </div>
                     }
                     else
                     {
-                        <img src="~/images/no-image.png"
-                             class="img-fluid rounded mb-4"
-                             style="height:400px;width:100%;object-fit:cover;" />
+                        <img src="/images/no-image.png"
+                             class="img-fluid rounded" />
                     }
+
+                </div>
+
+            </div>
+
+            <!-- Vehicle -->
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+
+                    Vehicle Information
+
+                </div>
+
+                <div class="card-body">
 
                     <table class="table table-bordered">
 
                         <tr>
-                            <th width="250">Title</th>
-                            <td>@Model.Vehicle?.Title</td>
+
+                            <th width="30%">Title</th>
+
+                            <td>@Model.Vehicle.Title</td>
+
                         </tr>
 
                         <tr>
+
+                            <th>Category</th>
+
+                            <td>@Model.Vehicle.VehicleCategory.Name</td>
+
+                        </tr>
+
+                        <tr>
+
                             <th>Brand</th>
-                            <td>@Model.Vehicle?.VehicleBrand?.Name</td>
+
+                            <td>@Model.Vehicle.VehicleBrand.Name</td>
+
                         </tr>
 
                         <tr>
+
                             <th>Model</th>
-                            <td>@Model.Vehicle?.VehicleModel?.Name</td>
+
+                            <td>@Model.Vehicle.VehicleModel.Name</td>
+
                         </tr>
 
                         <tr>
-                            <th>Registration</th>
-                            <td>@Model.Vehicle?.RegistrationNumber</td>
+
+                            <th>Year</th>
+
+                            <td>@Model.Vehicle.ManufacturingYear</td>
+
                         </tr>
 
                         <tr>
-                            <th>Manufacturing Year</th>
-                            <td>@Model.Vehicle?.ManufacturingYear</td>
-                        </tr>
 
-                        <tr>
-                            <th>KM Driven</th>
-                            <td>@Model.Vehicle?.KilometersDriven</td>
-                        </tr>
-
-                        <tr>
-                            <th>Owners</th>
-                            <td>@Model.Vehicle?.Owners</td>
-                        </tr>
-
-                        <tr>
                             <th>Fuel</th>
-                            <td>@Model.Vehicle?.FuelType?.Name</td>
+
+                            <td>@Model.Vehicle.FuelType.Name</td>
+
                         </tr>
 
                         <tr>
+
+                            <th>KM Driven</th>
+
+                            <td>@Model.Vehicle.KilometersDriven</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>Registration</th>
+
+                            <td>@Model.Vehicle.RegistrationNumber</td>
+
+                        </tr>
+
+                        <tr>
+
                             <th>Description</th>
-                            <td>@Model.Vehicle?.Description</td>
+
+                            <td>@Model.Vehicle.Description</td>
+
                         </tr>
 
                     </table>
@@ -114,15 +202,79 @@
 
         </div>
 
+        <!-- RIGHT -->
+
         <div class="col-lg-4">
 
-            <div class="card shadow">
+            <!-- Auction -->
 
-                <div class="card-header bg-primary text-white">
+            <div class="card shadow-sm mb-4">
+
+                <div class="card-header">
 
                     Auction Information
 
                 </div>
+
+                @if (Model.Status == AuctionStatus.Closed)
+                {
+                    <div class="card shadow-sm mt-4">
+
+                        <div class="card-header bg-success text-white">
+
+                            Auction Result
+
+                        </div>
+
+                        <div class="card-body">
+
+                            @if (Model.Winner != null)
+                            {
+                                <h5>Winner</h5>
+
+                                <h3 class="text-success">
+
+                                    @Model.Winner.FullName
+
+                                </h3>
+
+                                <hr />
+
+                                <h5>Winning Bid</h5>
+
+                                <h2>
+
+                                    ₹ @Model.WinningBidAmount?.ToString("N0")
+
+                                </h2>
+
+                                <hr />
+
+                                <h6>
+
+                                    Closed On
+
+                                </h6>
+
+                                <span>
+
+                                    @Model.ClosedOn
+
+                                </span>
+                            }
+                            else
+                            {
+                                <div class="alert alert-warning">
+
+                                    No bids were received.
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+                }
 
                 <div class="card-body">
 
@@ -130,47 +282,15 @@
 
                         <tr>
 
-                            <th>Start Date</th>
+                            <th>Status</th>
 
                             <td>
 
-                                @Model.StartDate.ToString("dd MMM yyyy")
+                                <span class="badge bg-success">
 
-                            </td>
+                                    @Model.Status
 
-                        </tr>
-
-                        <tr>
-
-                            <th>Start Time</th>
-
-                            <td>
-
-                                @Model.StartDate.ToString("hh:mm tt")
-
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <th>End Date</th>
-
-                            <td>
-
-                                @Model.EndDate.ToString("dd MMM yyyy")
-
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <th>End Time</th>
-
-                            <td>
-
-                                @Model.EndDate.ToString("hh:mm tt")
+                                </span>
 
                             </td>
 
@@ -182,7 +302,7 @@
 
                             <td>
 
-                                ₹ @Model.StartingPrice.ToString("N0")
+                                ₹ @Model.StartingPrice
 
                             </td>
 
@@ -192,9 +312,9 @@
 
                             <th>Current Bid</th>
 
-                            <td class="fw-bold text-success">
+                            <td class="text-success fw-bold">
 
-                                ₹ @Model.CurrentBid.ToString("N0")
+                                ₹ @Model.CurrentBid
 
                             </td>
 
@@ -206,7 +326,7 @@
 
                             <td>
 
-                                ₹ @Model.ReservePrice?.ToString("N0")
+                                ₹ @Model.ReservePrice
 
                             </td>
 
@@ -214,48 +334,139 @@
 
                         <tr>
 
-                            <th>Status</th>
+                            <th>Start</th>
 
                             <td>
 
-                                @if (Model.IsClosed)
-                                {
-                                    <span class="badge bg-secondary">
+                                @Model.StartTime
 
-                                        Closed
+                            </td>
 
-                                    </span>
-                                }
-                                else if (Model.StartDate > DateTime.Now)
-                                {
-                                    <span class="badge bg-info">
+                        </tr>
 
-                                        Upcoming
+                        <tr>
 
-                                    </span>
-                                }
-                                else if (Model.EndDate < DateTime.Now)
-                                {
-                                    <span class="badge bg-dark">
+                            <th>End</th>
 
-                                        Completed
+                            <td>
 
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-success">
-
-                                        Live
-
-                                    </span>
-                                }
+                                @Model.EndTime
 
                             </td>
 
                         </tr>
 
                     </table>
+
+                </div>
+
+            </div>
+
+            <!-- Seller -->
+
+            <div class="card shadow-sm mb-4">
+
+                <div class="card-header">
+
+                    Seller Information
+
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table">
+
+                        <tr>
+
+                            <th>Name</th>
+
+                            <td>@Model.Vehicle.Seller.FullName</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>Email</th>
+
+                            <td>@Model.Vehicle.Seller.Email</td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>Phone</th>
+
+                            <td>@Model.Vehicle.Seller.PhoneNumber</td>
+
+                        </tr>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            <!-- Bids -->
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+
+                    Bid History
+
+                </div>
+
+                <div class="card-body">
+
+                    @if (Model.Bids.Any())
+                    {
+                        <table class="table table-sm">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>Buyer</th>
+
+                                    <th>Bid</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var bid in Model.Bids.OrderByDescending(x => x.BidTime))
+                                {
+                                    <tr>
+
+                                        <td>
+
+                                            @bid.Buyer.FullName
+
+                                        </td>
+
+                                        <td>
+
+                                            ₹ @bid.Amount
+
+                                        </td>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+                    }
+                    else
+                    {
+                        <p class="text-muted">
+
+                            No bids yet.
+
+                        </p>
+                    }
 
                 </div>
 

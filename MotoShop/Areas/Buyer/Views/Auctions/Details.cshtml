@@ -1,4 +1,5 @@
-﻿@model MotoShop.Models.Auction
+﻿@using MotoShop.Enums
+@model MotoShop.Models.Auction
 
 @{
     ViewData["Title"] = "Auction Details";
@@ -194,11 +195,28 @@
 
                             <td>
 
-                                <span class="fs-4 fw-bold text-success">
+                                <div class="card shadow mb-3">
 
-                                    ₹ @Model.CurrentBid.ToString("N0")
+                                    <div class="card-body text-center">
 
-                                </span>
+                                        <h6>Current Highest Bid</h6>
+
+                                        <h2 id="currentBid" class="text-success">
+
+                                            ₹ @Model.CurrentBid.ToString("N0")
+
+                                        </h2>
+
+                                        <small id="highestBidder">
+
+                                            Highest Bidder :
+                                            @(ViewBag.HighestBid?.Buyer?.FullName ?? "No Bids")
+
+                                        </small>
+
+                                    </div>
+
+                                </div>
 
                             </td>
 
@@ -234,7 +252,7 @@
 
                             <td>
 
-                                <span id="countdown"></span>
+                                <h3 id="countdown"></h3>
 
                             </td>
 
@@ -299,45 +317,60 @@
                     }
                     else
                     {
-                        <form asp-action="PlaceBid" method="post">
+                        @if (Model.Status == AuctionStatus.Live)
+                        {
+                            <form asp-action="PlaceBid" method="post">
 
-                            <input type="hidden"
-                                   name="auctionId"
-                                   value="@Model.Id" />
+                                <input type="hidden"
+                                name="auctionId"
+                                value="@Model.Id" />
 
-                            <div class="mb-3">
+                                <div class="mb-3">
 
-                                <label class="form-label">
+                                    <label class="form-label">
 
-                                    Your Bid
+                                        Your Bid
 
-                                </label>
+                                    </label>
 
-                                <input class="form-control form-control-lg"
-                                       type="number"
-                                       step="1"
-                                       min="@(Model.CurrentBid + 1000)"
-                                       name="amount"
-                                       required />
+                                    <input class="form-control form-control-lg"
+                                    type="number"
+                                    step="1"
+                                    min="@(Model.CurrentBid + 1000)"
+                                    name="amount"
+                                    required />
 
-                                <small class="text-muted">
+                                    <small class="text-muted">
 
-                                    Minimum Bid :
-                                    ₹ @(Model.CurrentBid + 1000)
+                                        Minimum Bid :
+                                        ₹ @(Model.CurrentBid + 1000)
 
-                                </small>
+                                    </small>
+
+                                </div>
+
+                                <button class="btn btn-success btn-lg w-100">
+
+                                    <i class="bi bi-cash-stack"></i>
+
+                                    Place Bid
+
+                                </button>
+
+                            </form>
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning">
+
+                                <strong>
+
+                                    This auction is closed.
+
+                                </strong>
 
                             </div>
-
-                            <button class="btn btn-success btn-lg w-100">
-
-                                <i class="bi bi-cash-stack"></i>
-
-                                Place Bid
-
-                            </button>
-
-                        </form>
+                        }
                     }
 
                 </div>
@@ -372,9 +405,9 @@
 
                         </thead>
 
-                        <tbody>
+                        <tbody id="bidHistory">
 
-                            @foreach (var bid in bids)
+                            @foreach (var bid in ViewBag.BidHistory)
                             {
                                 <tr>
 
@@ -384,7 +417,7 @@
 
                                     </td>
 
-                                    <td class="text-success fw-bold">
+                                    <td>
 
                                         ₹ @bid.Amount.ToString("N0")
 
@@ -392,7 +425,7 @@
 
                                     <td>
 
-                                        @bid.BidTime.ToString("dd MMM HH:mm")
+                                        @bid.CreatedOn.ToString("HH:mm:ss")
 
                                     </td>
 
@@ -409,6 +442,32 @@
 
         </div>
 
+        <!-- Toast Notification -->
+
+        <div class="position-fixed bottom-0 end-0 p-3"
+             style="z-index:9999">
+
+            <div id="bidToast"
+                 class="toast">
+
+                <div class="toast-header">
+
+                    <strong>
+
+                        Live Auction
+
+                    </strong>
+
+                </div>
+
+                <div class="toast-body"
+                     id="toastBody">
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
 </div>
@@ -416,6 +475,95 @@
 @section Scripts {
 
     <script>
+
+        const endDate = new Date("@Model.EndDate.ToString("yyyy-MM-ddTHH:mm:ss")");
+
+        setInterval(function() {
+
+            let diff = endDate - new Date();
+
+            if (diff <= 0) {
+
+                document.getElementById("countdown").innerHTML = "Auction Closed";
+
+                return;
+
+            }
+
+            let h = Math.floor(diff / 1000 / 60 / 60);
+
+            let m = Math.floor((diff / 1000 / 60) % 60);
+
+            let s = Math.floor((diff / 1000) % 60);
+
+            document.getElementById("countdown").innerHTML =
+
+                `${h}h ${m}m ${s}s`;
+
+        }, 1000);
+
+        const auctionId = '@Model.Id';
+
+        const connection = new signalR.HubConnectionBuilder()
+
+            .withUrl("/auctionHub")
+
+            .build();
+
+        connection.start().then(function() {
+
+            connection.invoke("JoinAuction", auctionId);
+
+        });
+
+        connection.on("ReceiveBid", function(data) {
+
+            document.getElementById("currentBid").innerHTML =
+                "₹ " + Number(data.amount).toLocaleString();
+
+            document.getElementById("highestBidder").innerHTML =
+                "Highest Bidder : " + data.buyer;
+
+            let tbody = document.getElementById("bidHistory");
+            let bidBox = document.querySelector("input[name='amount']");
+
+            if (bidBox) {
+
+                bidBox.value = "";
+
+                bidBox.min = data.amount + 1000;
+
+            }
+
+            tbody.insertAdjacentHTML("afterbegin",
+
+                `<tr>
+
+                    <td>${data.buyer}</td>
+
+                    <td>₹ ${Number(data.amount).toLocaleString()}</td>
+
+                    <td>${data.time}</td>
+
+                </tr>`);
+
+            document.getElementById("toastBody").innerHTML =
+
+                `${data.buyer} placed ₹ ${Number(data.amount).toLocaleString()}`;
+
+            let toast = new bootstrap.Toast(
+
+                document.getElementById("bidToast"));
+
+            toast.show();
+
+        });
+
+        window.onbeforeunload = function() {
+
+            connection.invoke("LeaveAuction", auctionId);
+
+        };
 
         document.querySelectorAll(".thumb").forEach(function(img) {
 
@@ -434,6 +582,12 @@
             let now = new Date();
 
             let diff = end - now;
+
+            if (diff <= 0) {
+
+                location.reload();
+
+            }
 
             if (diff < 0) {
 
