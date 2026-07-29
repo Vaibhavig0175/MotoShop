@@ -300,7 +300,7 @@
                                 </td>
 
                                 <td>
-
+                                    
                                     @if (item.Status == "Upcoming")
                                     {
                                         <span class="badge bg-warning">
@@ -313,7 +313,14 @@
                                     {
                                         <span class="badge bg-success">
 
-                                            Live
+                                            <a asp-action="Close"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-sm btn-danger"
+                                               title="Close Auction">
+
+                                                <i class="bi bi-stop-fill"></i>
+
+                                            </a>
 
                                         </span>
                                     }
@@ -363,6 +370,18 @@
                                             <i class="bi bi-pencil"></i>
 
                                         </a>
+
+                                        @if (item.Status == "Upcoming")
+                                        {
+                                            <a asp-action="Start"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-sm btn-success"
+                                               title="Start Auction">
+
+                                                <i class="bi bi-play-fill"></i>
+
+                                            </a>
+                                        }
 
                                         <a asp-action="Delete"
                                            asp-route-id="@item.Id"

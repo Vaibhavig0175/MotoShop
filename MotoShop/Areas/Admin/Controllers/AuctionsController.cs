@@ -327,5 +327,74 @@ namespace MotoShop.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> Start(int id)
+        {
+            var auction = await _context.Auctions
+                .FirstOrDefaultAsync(a => a.Id == id);
+
+            if (auction == null)
+                return NotFound();
+
+            if (auction.Status != AuctionStatus.Upcoming)
+            {
+                TempData["Error"] = "Only upcoming auctions can be started.";
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            auction.Status = AuctionStatus.Live;
+
+            auction.StartTime = DateTime.Now;
+
+            _context.Update(auction);
+
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Auction started successfully.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Close(int id)
+        {
+            var auction = await _context.Auctions
+                .Include(a => a.Bids)
+                    .ThenInclude(b => b.Buyer)
+                .FirstOrDefaultAsync(a => a.Id == id);
+
+            if (auction == null)
+                return NotFound();
+
+            if (auction.Status != AuctionStatus.Live)
+            {
+                TempData["Error"] = "Only live auctions can be closed.";
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            auction.Status = AuctionStatus.Closed;
+
+            auction.EndTime = DateTime.Now;
+
+            var winningBid = auction.Bids
+                .OrderByDescending(x => x.Amount)
+                .FirstOrDefault();
+
+            if (winningBid != null)
+            {
+                auction.CurrentBid = winningBid.Amount;
+
+                // Winner handling will be added in the next step
+            }
+
+            _context.Update(auction);
+
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Auction closed successfully.";
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

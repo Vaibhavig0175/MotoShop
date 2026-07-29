@@ -1,4 +1,5 @@
-﻿@model MotoShop.Models.Auction
+﻿@using MotoShop.Enums
+@model MotoShop.Models.Auction
 
 @{
     ViewData["Title"] = "Auction Details";
@@ -316,45 +317,60 @@
                     }
                     else
                     {
-                        <form asp-action="PlaceBid" method="post">
+                        @if (Model.Status == AuctionStatus.Live)
+                        {
+                            <form asp-action="PlaceBid" method="post">
 
-                            <input type="hidden"
-                                   name="auctionId"
-                                   value="@Model.Id" />
+                                <input type="hidden"
+                                name="auctionId"
+                                value="@Model.Id" />
 
-                            <div class="mb-3">
+                                <div class="mb-3">
 
-                                <label class="form-label">
+                                    <label class="form-label">
 
-                                    Your Bid
+                                        Your Bid
 
-                                </label>
+                                    </label>
 
-                                <input class="form-control form-control-lg"
-                                       type="number"
-                                       step="1"
-                                       min="@(Model.CurrentBid + 1000)"
-                                       name="amount"
-                                       required />
+                                    <input class="form-control form-control-lg"
+                                    type="number"
+                                    step="1"
+                                    min="@(Model.CurrentBid + 1000)"
+                                    name="amount"
+                                    required />
 
-                                <small class="text-muted">
+                                    <small class="text-muted">
 
-                                    Minimum Bid :
-                                    ₹ @(Model.CurrentBid + 1000)
+                                        Minimum Bid :
+                                        ₹ @(Model.CurrentBid + 1000)
 
-                                </small>
+                                    </small>
+
+                                </div>
+
+                                <button class="btn btn-success btn-lg w-100">
+
+                                    <i class="bi bi-cash-stack"></i>
+
+                                    Place Bid
+
+                                </button>
+
+                            </form>
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning">
+
+                                <strong>
+
+                                    This auction is closed.
+
+                                </strong>
 
                             </div>
-
-                            <button class="btn btn-success btn-lg w-100">
-
-                                <i class="bi bi-cash-stack"></i>
-
-                                Place Bid
-
-                            </button>
-
-                        </form>
+                        }
                     }
 
                 </div>

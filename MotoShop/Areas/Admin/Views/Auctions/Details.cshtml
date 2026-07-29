@@ -1,4 +1,5 @@
-﻿@model MotoShop.Models.Auction;
+﻿@using MotoShop.Enums
+@model MotoShop.Models.Auction;
 
 @{
     ViewData["Title"] = "Auction Details";
@@ -25,6 +26,31 @@
                 Edit
 
             </a>
+
+            @if (Model.Status == AuctionStatus.Upcoming)
+            {
+                <a asp-action="Start"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-success">
+
+                    <i class="bi bi-play-fill"></i>
+
+                    Start Auction
+
+                </a>
+            }
+            @if (Model.Status == AuctionStatus.Live)
+            {
+                <a asp-action="Close"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-danger">
+
+                    <i class="bi bi-stop-fill"></i>
+
+                    Close Auction
+
+                </a>
+            }
 
             <a asp-action="Index"
                class="btn btn-secondary">
@@ -189,6 +215,50 @@
                     Auction Information
 
                 </div>
+
+                @if (Model.Status == AuctionStatus.Closed)
+                {
+                    var winner = Model.Bids
+                        .OrderByDescending(x => x.Amount)
+                        .FirstOrDefault();
+
+                    <div class="card shadow-sm mb-4">
+
+                        <div class="card-header bg-success text-white">
+
+                            Winning Bid
+
+                        </div>
+
+                        <div class="card-body">
+
+                            @if (winner != null)
+                            {
+                                <h4 class="text-success">
+
+                                    @winner.Buyer.FullName
+
+                                </h4>
+
+                                <h2>
+
+                                    ₹ @winner.Amount.ToString("N0")
+
+                                </h2>
+                            }
+                            else
+                            {
+                                <p class="text-muted">
+
+                                    No bids received.
+
+                                </p>
+                            }
+
+                        </div>
+
+                    </div>
+                }
 
                 <div class="card-body">
 
