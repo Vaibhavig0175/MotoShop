@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using MotoShop.Data;
+using MotoShop.Hubs;
 using MotoShop.Interfaces.Services;
 using MotoShop.Models;
-using Microsoft.AspNetCore.SignalR;
-using MotoShop.Hubs;
 
 namespace MotoShop.Areas.Buyer.Controllers
 {
@@ -17,17 +18,21 @@ namespace MotoShop.Areas.Buyer.Controllers
         private readonly IBidService _bidService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHubContext<AuctionHub> _hub;
+        private readonly ApplicationDbContext _context;
+
 
         public AuctionsController(
             IAuctionService auctionService,
             IBidService bidService,
             UserManager<ApplicationUser> userManager,
-            IHubContext<AuctionHub> hub)
+            IHubContext<AuctionHub> hub,
+            ApplicationDbContext context)
         {
             _auctionService = auctionService;
             _bidService = bidService;
             _userManager = userManager;
             _hub = hub;
+            _context = context;
         }
 
         //---------------------------------------------------
@@ -164,6 +169,24 @@ namespace MotoShop.Areas.Buyer.Controllers
             var bids = await _bidService.GetBuyerBidsAsync(buyer.Id);
 
             return View(bids);
+        }
+
+        public async Task<IActionResult> MyWonAuctions()
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var auctions = await _context.Auctions
+                .Include(a => a.Vehicle)
+                    .ThenInclude(v => v.VehicleBrand)
+                .Include(a => a.Vehicle)
+                    .ThenInclude(v => v.VehicleModel)
+                .Include(a => a.Vehicle)
+                    .ThenInclude(v => v.Images)
+                .Where(a => a.WinnerId == userId)
+                .OrderByDescending(a => a.ClosedOn)
+                .ToListAsync();
+
+            return View(auctions);
         }
     }
 }

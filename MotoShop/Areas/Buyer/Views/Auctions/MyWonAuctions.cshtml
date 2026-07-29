@@ -1,0 +1,105 @@
+﻿@model IEnumerable<MotoShop.Models.Auction>
+
+@{
+    ViewData["Title"] = "My Won Auctions";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2 class="fw-bold">
+
+            My Won Auctions
+
+        </h2>
+
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+
+            You haven't won any auctions yet.
+
+        </div>
+    }
+    else
+    {
+        <div class="row">
+
+            @foreach (var auction in Model)
+            {
+                var image = auction.Vehicle.Images.FirstOrDefault();
+
+                <div class="col-lg-4 mb-4">
+
+                    <div class="card shadow h-100">
+
+                        @if (image != null)
+                        {
+                            <img src="@image.ImageUrl"
+                                 class="card-img-top"
+                                 style="height:220px;object-fit:cover;">
+                        }
+                        else
+                        {
+                            <img src="/images/no-image.png"
+                                 class="card-img-top"
+                                 style="height:220px;object-fit:cover;">
+                        }
+
+                        <div class="card-body">
+
+                            <h5>
+
+                                @auction.Vehicle.VehicleBrand.Name
+                                @auction.Vehicle.VehicleModel.Name
+
+                            </h5>
+
+                            <hr />
+
+                            <p>
+
+                                <strong>Winning Bid</strong>
+
+                                <br />
+
+                                ₹ @auction.WinningBidAmount?.ToString("N0")
+
+                            </p>
+
+                            <p>
+
+                                <strong>Closed On</strong>
+
+                                <br />
+
+                                @auction.ClosedOn?.ToString("dd MMM yyyy hh:mm tt")
+
+                            </p>
+
+                        </div>
+
+                        <div class="card-footer bg-white">
+
+                            <a asp-action="Details"
+                               asp-route-id="@auction.Id"
+                               class="btn btn-primary w-100">
+
+                                View Auction
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>

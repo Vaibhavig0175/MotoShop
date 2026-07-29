@@ -24,6 +24,17 @@
 
     <a asp-area="Buyer"
        asp-controller="Auctions"
+       asp-action="MyWonAuctions"
+       class="list-group-item list-group-item-action">
+
+        <i class="bi bi-trophy-fill"></i>
+
+        My Won Auctions
+
+    </a>
+
+    <a asp-area="Buyer"
+       asp-controller="Auctions"
        asp-action="MyBids"
        class="list-group-item list-group-item-action">
 
@@ -33,18 +44,7 @@
 
     </a>
 
-    <a asp-area="Buyer"
-       asp-controller="Vehicles"
-       asp-action="Won"
-       class="list-group-item list-group-item-action">
-
-        <i class="bi bi-trophy me-2"></i>
-
-        Won Auctions
-
-    </a>
-
-    <a asp-area="Buyer"
+    @* <a asp-area="Buyer"
        asp-controller="Vehicles"
        asp-action="Purchased"
        class="list-group-item list-group-item-action">
@@ -74,6 +74,6 @@
 
         Notifications
 
-    </a>
+    </a> *@
 
 </div>
