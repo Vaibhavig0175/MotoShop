@@ -1,4 +1,4 @@
-﻿@model MotoShop.Areas.Admin.Models.AuctionVM
+﻿@model MotoShop.Areas.Admin.Models.CreateAuctionViewModel
 
 @{
     ViewData["Title"] = "Edit Auction";
@@ -10,17 +10,17 @@
 
         <div class="col-lg-8">
 
-            <div class="card shadow">
+            <div class="card shadow border-0">
 
                 <div class="card-header bg-warning">
 
-                    <h4 class="mb-0">
+                    <h3 class="mb-0">
 
                         <i class="bi bi-pencil-square"></i>
 
                         Edit Auction
 
-                    </h4>
+                    </h3>
 
                 </div>
 
@@ -31,12 +31,12 @@
                         <input asp-for="Id" type="hidden" />
 
                         <div asp-validation-summary="ModelOnly"
-                             class="text-danger mb-3"></div>
+                             class="text-danger mb-3">
+                        </div>
 
                         <div class="mb-3">
 
-                            <label asp-for="VehicleId"
-                                   class="form-label"></label>
+                            <label asp-for="VehicleId" class="form-label fw-bold"></label>
 
                             <select asp-for="VehicleId"
                                     asp-items="Model.Vehicles"
@@ -47,37 +47,48 @@
                             </select>
 
                             <span asp-validation-for="VehicleId"
-                                  class="text-danger"></span>
+                                  class="text-danger">
+                            </span>
 
                         </div>
 
                         <div class="row">
 
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6">
 
-                                <label asp-for="StartDate"
-                                       class="form-label"></label>
+                                <div class="mb-3">
 
-                                <input asp-for="StartDate"
-                                       type="datetime-local"
-                                       class="form-control" />
+                                    <label asp-for="StartingPrice"
+                                           class="form-label fw-bold">
+                                    </label>
 
-                                <span asp-validation-for="StartDate"
-                                      class="text-danger"></span>
+                                    <input asp-for="StartingPrice"
+                                           class="form-control" />
+
+                                    <span asp-validation-for="StartingPrice"
+                                          class="text-danger">
+                                    </span>
+
+                                </div>
 
                             </div>
 
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6">
 
-                                <label asp-for="EndDate"
-                                       class="form-label"></label>
+                                <div class="mb-3">
 
-                                <input asp-for="EndDate"
-                                       type="datetime-local"
-                                       class="form-control" />
+                                    <label asp-for="ReservePrice"
+                                           class="form-label fw-bold">
+                                    </label>
 
-                                <span asp-validation-for="EndDate"
-                                      class="text-danger"></span>
+                                    <input asp-for="ReservePrice"
+                                           class="form-control" />
+
+                                    <span asp-validation-for="ReservePrice"
+                                          class="text-danger">
+                                    </span>
+
+                                </div>
 
                             </div>
 
@@ -85,29 +96,43 @@
 
                         <div class="row">
 
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6">
 
-                                <label asp-for="StartingPrice"
-                                       class="form-label"></label>
+                                <div class="mb-3">
 
-                                <input asp-for="StartingPrice"
-                                       class="form-control" />
+                                    <label asp-for="StartTime"
+                                           class="form-label fw-bold">
+                                    </label>
 
-                                <span asp-validation-for="StartingPrice"
-                                      class="text-danger"></span>
+                                    <input asp-for="StartTime"
+                                           type="datetime-local"
+                                           class="form-control" />
+
+                                    <span asp-validation-for="StartTime"
+                                          class="text-danger">
+                                    </span>
+
+                                </div>
 
                             </div>
 
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6">
 
-                                <label asp-for="ReservePrice"
-                                       class="form-label"></label>
+                                <div class="mb-3">
 
-                                <input asp-for="ReservePrice"
-                                       class="form-control" />
+                                    <label asp-for="EndTime"
+                                           class="form-label fw-bold">
+                                    </label>
 
-                                <span asp-validation-for="ReservePrice"
-                                      class="text-danger"></span>
+                                    <input asp-for="EndTime"
+                                           type="datetime-local"
+                                           class="form-control" />
+
+                                    <span asp-validation-for="EndTime"
+                                          class="text-danger">
+                                    </span>
+
+                                </div>
 
                             </div>
 
@@ -115,10 +140,10 @@
 
                         <hr />
 
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-end">
 
                             <a asp-action="Index"
-                               class="btn btn-secondary">
+                               class="btn btn-secondary me-2">
 
                                 <i class="bi bi-arrow-left"></i>
 
@@ -149,7 +174,7 @@
 
 </div>
 
-@section Scripts {
+@section Scripts{
 
     <partial name="_ValidationScriptsPartial" />
 

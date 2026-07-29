@@ -1,66 +1,69 @@
-﻿@model IEnumerable<MotoShop.Models.Auction>
+﻿@model MotoShop.Areas.Admin.Models.AuctionDashboardViewModel
 
 @{
-    ViewData["Title"] = "Auctions";
+    ViewData["Title"] = "Auction Management";
 }
 
 <div class="container-fluid">
+
+    <!-- Header -->
 
     <div class="d-flex justify-content-between align-items-center mb-4">
 
         <div>
 
-            <h2 class="fw-bold mb-0">
-                <i class="bi bi-hammer"></i>
-                Auctions
+            <h2 class="fw-bold mb-1">
+                Auction Management
             </h2>
 
             <small class="text-muted">
-                Manage all vehicle auctions
+                Manage all vehicle auctions from one place.
             </small>
 
         </div>
 
-        <a asp-action="Create" class="btn btn-primary">
+        <a asp-action="Create"
+           class="btn btn-primary">
+
             <i class="bi bi-plus-circle"></i>
+
             Create Auction
+
         </a>
 
     </div>
 
-    @if (TempData["Success"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show">
+    <!-- Dashboard Cards -->
 
-            @TempData["Success"]
+    <div class="row g-3 mb-4">
 
-            <button class="btn-close"
-                    data-bs-dismiss="alert"></button>
+        <div class="col-xl-3 col-md-6">
 
-        </div>
-    }
+            <div class="card border-0 shadow-sm">
 
-    <div class="card shadow border-0">
+                <div class="card-body">
 
-        <div class="card-header bg-white">
+                    <div class="d-flex justify-content-between">
 
-            <div class="row">
+                        <div>
 
-                <div class="col-md-6">
+                            <small class="text-muted">
 
-                    <h5 class="mb-0">
+                                Total Auctions
 
-                        Auction List
+                            </small>
 
-                    </h5>
+                            <h2 class="fw-bold">
 
-                </div>
+                                @Model.TotalAuctions
 
-                <div class="col-md-6">
+                            </h2>
 
-                    <input id="searchBox"
-                           class="form-control"
-                           placeholder="Search Auction..." />
+                        </div>
+
+                        <i class="bi bi-hammer text-primary fs-1"></i>
+
+                    </div>
 
                 </div>
 
@@ -68,195 +71,319 @@
 
         </div>
 
-        <div class="table-responsive">
+        <div class="col-xl-3 col-md-6">
 
-            <table class="table table-hover align-middle mb-0"
-                   id="auctionTable">
+            <div class="card border-0 shadow-sm">
 
-                <thead class="table-dark">
+                <div class="card-body">
 
-                    <tr>
+                    <div class="d-flex justify-content-between">
 
-                        <th width="100">Image</th>
+                        <div>
 
-                        <th>Vehicle</th>
+                            <small class="text-muted">
 
-                        <th>Starting Price</th>
+                                Upcoming
 
-                        <th>Current Bid</th>
+                            </small>
 
-                        <th>Start</th>
+                            <h2 class="fw-bold text-warning">
 
-                        <th>End</th>
+                                @Model.UpcomingAuctions
 
-                        <th>Status</th>
+                            </h2>
 
-                        <th width="220">Action</th>
+                        </div>
 
-                    </tr>
+                        <i class="bi bi-clock-history text-warning fs-1"></i>
 
-                </thead>
+                    </div>
 
-                <tbody>
+                </div>
 
-                    @foreach (var item in Model)
-                    {
-                        var now = DateTime.Now;
+            </div>
 
-                        string badge;
+        </div>
 
-                        string color;
+        <div class="col-xl-3 col-md-6">
 
-                        if (item.IsClosed)
-                        {
-                            badge = "Closed";
-                            color = "secondary";
-                        }
-                        else if (item.StartDate > now)
-                        {
-                            badge = "Upcoming";
-                            color = "info";
-                        }
-                        else if (item.EndDate < now)
-                        {
-                            badge = "Completed";
-                            color = "dark";
-                        }
-                        else
-                        {
-                            badge = "Live";
-                            color = "success";
-                        }
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <small class="text-muted">
+
+                                Live
+
+                            </small>
+
+                            <h2 class="fw-bold text-success">
+
+                                @Model.LiveAuctions
+
+                            </h2>
+
+                        </div>
+
+                        <i class="bi bi-broadcast text-success fs-1"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <small class="text-muted">
+
+                                Closed
+
+                            </small>
+
+                            <h2 class="fw-bold text-danger">
+
+                                @Model.ClosedAuctions
+
+                            </h2>
+
+                        </div>
+
+                        <i class="bi bi-check-circle text-danger fs-1"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Search -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <input type="text"
+                           id="searchBox"
+                           class="form-control"
+                           placeholder="Search vehicle, seller or status..." />
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Auction Table -->
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle"
+                       id="auctionTable">
+
+                    <thead class="table-light">
 
                         <tr>
 
-                            <td>
+                            <th>#</th>
 
-                                @if (item.Vehicle?.Images != null &&
-                                    item.Vehicle.Images.Any())
-                                {
-                                    <img src="@item.Vehicle.Images.First().ImageUrl"
-                                         width="80"
-                                         height="60"
-                                         class="rounded"
-                                         style="object-fit:cover;" />
-                                }
-                                else
-                                {
-                                    <img src="~/images/no-image.png"
-                                         width="80"
-                                         class="rounded" />
-                                }
+                            <th>Vehicle</th>
 
-                            </td>
+                            <th>Seller</th>
 
-                            <td>
+                            <th>Starting Price</th>
 
-                                <strong>
+                            <th>Current Bid</th>
 
-                                    @item.Vehicle?.VehicleBrand?.Name
-                                    @item.Vehicle?.VehicleModel?.Name
+                            <th>Start</th>
 
-                                </strong>
+                            <th>End</th>
 
-                                <br />
+                            <th>Status</th>
 
-                                <small class="text-muted">
+                            <th width="220">Actions</th>
 
-                                    @item.Vehicle?.Title
+                        </tr>
 
-                                </small>
+                    </thead>
 
-                            </td>
+                    <tbody>
 
-                            <td>
+                        @foreach (var item in Model.Auctions)
+                        {
+                            <tr>
 
-                                ₹ @item.StartingPrice.ToString("N0")
+                                <td>
 
-                            </td>
+                                    @item.Id
 
-                            <td>
+                                </td>
 
-                                <strong class="text-success">
+                                <td class="fw-semibold">
+
+                                    @item.VehicleName
+
+                                </td>
+
+                                <td>
+
+                                    @item.SellerName
+
+                                </td>
+
+                                <td>
+
+                                    ₹ @item.StartingPrice.ToString("N0")
+
+                                </td>
+
+                                <td class="text-success fw-bold">
 
                                     ₹ @item.CurrentBid.ToString("N0")
 
-                                </strong>
+                                </td>
 
-                            </td>
+                                <td>
 
-                            <td>
+                                    @item.StartTime.ToString("dd MMM yyyy")
 
-                                @item.StartDate.ToString("dd MMM yyyy")
+                                    <br />
 
-                                <br />
+                                    <small class="text-muted">
 
-                                <small>
+                                        @item.StartTime.ToString("hh:mm tt")
 
-                                    @item.StartDate.ToString("hh:mm tt")
+                                    </small>
 
-                                </small>
+                                </td>
 
-                            </td>
+                                <td>
 
-                            <td>
+                                    @item.EndTime.ToString("dd MMM yyyy")
 
-                                @item.EndDate.ToString("dd MMM yyyy")
+                                    <br />
 
-                                <br />
+                                    <small class="text-muted">
 
-                                <small>
+                                        @item.EndTime.ToString("hh:mm tt")
 
-                                    @item.EndDate.ToString("hh:mm tt")
+                                    </small>
 
-                                </small>
+                                </td>
 
-                            </td>
+                                <td>
 
-                            <td>
+                                    @if (item.Status == "Upcoming")
+                                    {
+                                        <span class="badge bg-warning">
 
-                                <span class="badge bg-@color">
+                                            Upcoming
 
-                                    @badge
+                                        </span>
+                                    }
+                                    else if (item.Status == "Live")
+                                    {
+                                        <span class="badge bg-success">
 
-                                </span>
+                                            Live
 
-                            </td>
+                                        </span>
+                                    }
+                                    else if (item.Status == "Closed")
+                                    {
+                                        <span class="badge bg-secondary">
 
-                            <td>
+                                            Closed
 
-                                <a asp-action="Details"
-                                   asp-route-id="@item.Id"
-                                   class="btn btn-info btn-sm">
+                                        </span>
+                                    }
+                                    else if (item.Status == "Cancelled")
+                                    {
+                                        <span class="badge bg-danger">
 
-                                    <i class="bi bi-eye"></i>
+                                            Cancelled
 
-                                </a>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-info">
 
-                                <a asp-action="Edit"
-                                   asp-route-id="@item.Id"
-                                   class="btn btn-warning btn-sm">
+                                            @item.Status
 
-                                    <i class="bi bi-pencil-square"></i>
+                                        </span>
+                                    }
 
-                                </a>
+                                </td>
 
-                                <a asp-action="Delete"
-                                   asp-route-id="@item.Id"
-                                   class="btn btn-danger btn-sm">
+                                <td>
 
-                                    <i class="bi bi-trash"></i>
+                                    <div class="btn-group">
 
-                                </a>
+                                        <a asp-action="Details"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-outline-primary">
 
-                            </td>
+                                            <i class="bi bi-eye"></i>
 
-                        </tr>
-                    }
+                                        </a>
 
-                </tbody>
+                                        <a asp-action="Edit"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-outline-warning">
 
-            </table>
+                                            <i class="bi bi-pencil"></i>
+
+                                        </a>
+
+                                        <a asp-action="Delete"
+                                           asp-route-id="@item.Id"
+                                           class="btn btn-sm btn-outline-danger">
+
+                                            <i class="bi bi-trash"></i>
+
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
 
         </div>
 
@@ -264,28 +391,27 @@
 
 </div>
 
-@section Scripts {
+@section Scripts{
 
-    <script>
+<script>
 
-        document.getElementById("searchBox")
-            .addEventListener("keyup", function() {
+document.getElementById("searchBox").addEventListener("keyup", function () {
 
-                let value = this.value.toLowerCase();
+    var value = this.value.toLowerCase();
 
-                let rows = document.querySelectorAll("#auctionTable tbody tr");
+    var rows = document.querySelectorAll("#auctionTable tbody tr");
 
-                rows.forEach(function(row) {
+    rows.forEach(function (row) {
 
-                    row.style.display =
-                        row.innerText.toLowerCase().includes(value)
-                            ? ""
-                            : "none";
+        row.style.display =
+            row.innerText.toLowerCase().includes(value)
+                ? ""
+                : "none";
 
-                });
+    });
 
-            });
+});
 
-    </script>
+</script>
 
 }

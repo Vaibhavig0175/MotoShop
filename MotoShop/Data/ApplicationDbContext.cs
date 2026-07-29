@@ -103,6 +103,10 @@ namespace MotoShop.Data
                 .WithMany()
                 .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Auction>()
+                .Property(x => x.Status)
+                .HasConversion<int>();
         }
     }
 }
