@@ -107,6 +107,12 @@ namespace MotoShop.Data
             builder.Entity<Auction>()
                 .Property(x => x.Status)
                 .HasConversion<int>();
+
+            builder.Entity<Auction>()
+                .HasOne(a => a.Winner)
+                .WithMany()
+                .HasForeignKey(a => a.WinnerId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

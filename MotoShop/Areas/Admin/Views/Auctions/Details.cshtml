@@ -218,41 +218,57 @@
 
                 @if (Model.Status == AuctionStatus.Closed)
                 {
-                    var winner = Model.Bids
-                        .OrderByDescending(x => x.Amount)
-                        .FirstOrDefault();
-
-                    <div class="card shadow-sm mb-4">
+                    <div class="card shadow-sm mt-4">
 
                         <div class="card-header bg-success text-white">
 
-                            Winning Bid
+                            Auction Result
 
                         </div>
 
                         <div class="card-body">
 
-                            @if (winner != null)
+                            @if (Model.Winner != null)
                             {
-                                <h4 class="text-success">
+                                <h5>Winner</h5>
 
-                                    @winner.Buyer.FullName
+                                <h3 class="text-success">
 
-                                </h4>
+                                    @Model.Winner.FullName
+
+                                </h3>
+
+                                <hr />
+
+                                <h5>Winning Bid</h5>
 
                                 <h2>
 
-                                    ₹ @winner.Amount.ToString("N0")
+                                    ₹ @Model.WinningBidAmount?.ToString("N0")
 
                                 </h2>
+
+                                <hr />
+
+                                <h6>
+
+                                    Closed On
+
+                                </h6>
+
+                                <span>
+
+                                    @Model.ClosedOn
+
+                                </span>
                             }
                             else
                             {
-                                <p class="text-muted">
+                                <div class="alert alert-warning">
 
-                                    No bids received.
+                                    No bids were received.
 
-                                </p>
+                                </div>
                             }
 
                         </div>

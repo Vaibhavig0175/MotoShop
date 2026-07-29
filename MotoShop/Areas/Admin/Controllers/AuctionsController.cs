@@ -96,6 +96,8 @@ namespace MotoShop.Areas.Admin.Controllers
                 .Include(a => a.Bids)
                     .ThenInclude(b => b.Buyer)
 
+                    .Include(a => a.Winner)
+
                 .FirstOrDefaultAsync(a => a.Id == id);
 
             if (auction == null)
@@ -378,16 +380,57 @@ namespace MotoShop.Areas.Admin.Controllers
             auction.EndTime = DateTime.Now;
 
             var winningBid = auction.Bids
-                .OrderByDescending(x => x.Amount)
-                .FirstOrDefault();
+                            .OrderByDescending(x => x.Amount)
+                            .FirstOrDefault();
 
             if (winningBid != null)
             {
                 auction.CurrentBid = winningBid.Amount;
 
-                // Winner handling will be added in the next step
+                auction.WinnerId = winningBid.BuyerId;
+
+                auction.WinningBidAmount = winningBid.Amount;
+
+                auction.ClosedOn = DateTime.Now;
+
+                auction.Status = AuctionStatus.Closed;
+
+                auction.EndTime = DateTime.Now;
+
+                // Optional: Mark vehicle sold
+                // auction.Vehicle.Status = VehicleStatus.Sold;
+            }
+            else
+            {
+                auction.Status = AuctionStatus.Closed;
+
+                auction.ClosedOn = DateTime.Now;
             }
 
+            _context.Notifications.Add(new Notification
+            {
+                UserId = winningBid.BuyerId,
+
+                Title = "Congratulations!",
+
+                Message = $"You won the auction for {auction.Vehicle.Title}.",
+
+                IsRead = false,
+
+                CreatedOn = DateTime.Now
+            });
+            _context.Notifications.Add(new Notification
+            {
+                UserId = auction.Vehicle.SellerId,
+
+                Title = "Auction Closed",
+
+                Message = $"Your vehicle '{auction.Vehicle.Title}' has been sold.",
+
+                IsRead = false,
+
+                CreatedOn = DateTime.Now
+            });
             _context.Update(auction);
 
             await _context.SaveChangesAsync();

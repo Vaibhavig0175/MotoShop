@@ -37,6 +37,9 @@ namespace MotoShop.Models
 
         [ForeignKey(nameof(WinnerId))]
         public ApplicationUser? Winner { get; set; }
+        public decimal? WinningBidAmount { get; set; }
+
+        public DateTime? ClosedOn { get; set; }
         public ICollection<Bid> Bids { get; set; } = new List<Bid>();
 
     }
