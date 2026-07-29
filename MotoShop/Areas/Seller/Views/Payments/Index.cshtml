@@ -1,0 +1,99 @@
+﻿@model IEnumerable<MotoShop.Models.Payment>
+
+<div class="container-fluid">
+
+    <h2 class="mb-4">
+
+        Payments Received
+
+    </h2>
+
+    <table class="table table-hover shadow">
+
+        <thead class="table-dark">
+
+            <tr>
+
+                <th>Vehicle</th>
+
+                <th>Buyer</th>
+
+                <th>Amount</th>
+
+                <th>Status</th>
+
+                <th>Settlement</th>
+
+                <th>Date</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var payment in Model)
+            {
+                <tr>
+
+                    <td>
+
+                        @payment.Auction.Vehicle.VehicleBrand.Name
+
+                        @payment.Auction.Vehicle.VehicleModel.Name
+
+                    </td>
+
+                    <td>
+
+                        @payment.Buyer.FullName
+
+                    </td>
+
+                    <td>
+
+                        ₹ @payment.Amount.ToString("N0")
+
+                    </td>
+
+                    <td>
+
+                        @payment.Status
+
+                    </td>
+
+                    <td>
+
+                        @if (payment.IsSettled)
+                        {
+                            <span class="badge bg-success">
+
+                                Released
+
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning">
+
+                                Pending
+
+                            </span>
+                        }
+
+                    </td>
+
+                    <td>
+
+                        @payment.SettlementDate
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

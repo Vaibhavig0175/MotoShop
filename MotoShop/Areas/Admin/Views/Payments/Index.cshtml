@@ -1,0 +1,240 @@
+﻿@model IEnumerable<MotoShop.Models.Payment>
+
+@using MotoShop.Enums
+
+@{
+    ViewData["Title"] = "Payment Management";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2 class="fw-bold">
+
+            Payment Management
+
+        </h2>
+
+    </div>
+
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+
+            <div class="card shadow text-center">
+
+                <div class="card-body">
+
+                    <h2>@ViewBag.TotalPayments</h2>
+
+                    <p>Total Payments</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow text-center">
+
+                <div class="card-body">
+
+                    <h2 class="text-warning">
+
+                        @ViewBag.Pending
+
+                    </h2>
+
+                    <p>Awaiting Verification</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow text-center">
+
+                <div class="card-body">
+
+                    <h2 class="text-success">
+
+                        @ViewBag.Verified
+
+                    </h2>
+
+                    <p>Verified</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow text-center">
+
+                <div class="card-body">
+
+                    <h2 class="text-danger">
+
+                        @ViewBag.Refunded
+
+                    </h2>
+
+                    <p>Refunded</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <form method="get" class="mb-4">
+
+        <div class="input-group">
+
+            <input type="text"
+                   name="search"
+                   class="form-control"
+                   placeholder="Search Buyer / Transaction" />
+
+            <button class="btn btn-primary">
+
+                Search
+
+            </button>
+
+        </div>
+
+    </form>
+
+    <div class="card shadow">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover mb-0">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Buyer</th>
+
+                        <th>Vehicle</th>
+
+                        <th>Amount</th>
+
+                        <th>Status</th>
+
+                        <th>Transaction</th>
+
+                        <th>Date</th>
+
+                        <th width="220">Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>@item.Buyer.FullName</td>
+
+                            <td>
+
+                                @item.Auction.Vehicle.VehicleBrand.Name
+
+                                @item.Auction.Vehicle.VehicleModel.Name
+
+                            </td>
+
+                            <td>
+
+                                ₹ @item.Amount.ToString("N0")
+
+                            </td>
+
+                            <td>
+
+                                @item.Status
+
+                            </td>
+
+                            <td>
+
+                                @(item.TransactionId ?? "-")
+
+                            </td>
+
+                            <td>
+
+                                @(item.PaymentDate?.ToString("dd MMM yyyy"))
+
+                            </td>
+
+                            <td>
+
+                                @if (item.Status == PaymentStatus.Paid)
+                                {
+                                    <a asp-action="Verify"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-success btn-sm">
+
+                                        Verify
+
+                                    </a>
+
+                                    <a asp-action="Reject"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-danger btn-sm">
+
+                                        Reject
+
+                                    </a>
+                                }
+                                else if (item.Status == PaymentStatus.Verified && !item.IsSettled)
+                                {
+                                    <a asp-action="Release"
+                                       asp-route-id="@item.Id"
+                                       class="btn btn-primary btn-sm">
+
+                                        Release Payment
+
+                                    </a>
+                                }
+                                else if (item.IsSettled)
+                                {
+                                    <span class="badge bg-success">
+
+                                        Settled
+
+                                    </span>
+                                }
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

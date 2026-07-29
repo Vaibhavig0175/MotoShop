@@ -1,0 +1,155 @@
+﻿@model IEnumerable<MotoShop.Models.Payment>
+
+@using MotoShop.Enums
+
+@{
+    ViewData["Title"] = "My Payments";
+}
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2 class="fw-bold">
+
+            My Payments
+
+        </h2>
+
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+
+            No payment records found.
+
+        </div>
+    }
+    else
+    {
+        <div class="card shadow">
+
+            <div class="card-body">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>Vehicle</th>
+
+                            <th>Amount</th>
+
+                            <th>Status</th>
+
+                            <th>Transaction</th>
+
+                            <th>Date</th>
+
+                            <th width="150">Action</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var payment in Model)
+                        {
+                            <tr>
+
+                                <td>
+
+                                    @payment.Auction.Vehicle.VehicleBrand.Name
+                                    @payment.Auction.Vehicle.VehicleModel.Name
+
+                                </td>
+
+                                <td>
+
+                                    ₹ @payment.Amount.ToString("N0")
+
+                                </td>
+
+                                <td>
+
+                                    @switch (payment.Status)
+                                    {
+                                        case PaymentStatus.Pending:
+                                            <span class="badge bg-warning">Pending</span>
+                                            break;
+
+                                        case PaymentStatus.Paid:
+                                            <span class="badge bg-primary">Paid</span>
+                                            break;
+
+                                        case PaymentStatus.Verified:
+                                            <span class="badge bg-success">Verified</span>
+                                            break;
+
+                                        case PaymentStatus.Failed:
+                                            <span class="badge bg-danger">Failed</span>
+                                            break;
+
+                                        case PaymentStatus.Refunded:
+                                            <span class="badge bg-secondary">Refunded</span>
+                                            break;
+                                    }
+
+                                </td>
+
+                                <td>
+
+                                    @(payment.TransactionId ?? "-")
+
+                                </td>
+
+                                <td>
+
+                                    @(payment.PaymentDate?.ToString("dd MMM yyyy") ?? "-")
+
+                                </td>
+
+                                <td>
+
+                                    @if (payment.Status == PaymentStatus.Pending)
+                                    {
+                                        <a asp-action="Pay"
+                                           asp-route-id="@payment.Id"
+                                           class="btn btn-success btn-sm">
+
+                                            <i class="bi bi-credit-card-fill"></i>
+
+                                            Pay Now
+
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-outline-secondary btn-sm" disabled>
+
+                                            <i class="bi bi-check-circle-fill"></i>
+
+                                            Paid
+                                            Completed
+
+                                        </button>
+                                    }
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    }
+
+</div>

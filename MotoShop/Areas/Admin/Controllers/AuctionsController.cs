@@ -176,7 +176,7 @@ namespace MotoShop.Areas.Admin.Controllers
                 IsActive = true
             };
 
-            var seller = auction.Vehicle.Seller;
+            //var seller = auction.Vehicle.Seller;
 
             _context.Auctions.Add(auction);
 
@@ -428,6 +428,18 @@ namespace MotoShop.Areas.Admin.Controllers
                 Message = $"Your vehicle '{auction.Vehicle.Title}' has been sold.",
 
                 IsRead = false,
+
+                CreatedOn = DateTime.Now
+            });
+            _context.Payments.Add(new Payment
+            {
+                AuctionId = auction.Id,
+
+                BuyerId = winningBid.BuyerId,
+
+                Amount = winningBid.Amount,
+
+                Status = PaymentStatus.Pending,
 
                 CreatedOn = DateTime.Now
             });

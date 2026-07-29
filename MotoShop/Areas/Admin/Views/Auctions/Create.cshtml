@@ -112,7 +112,8 @@
 
                                     <input asp-for="StartTime"
                                            type="datetime-local"
-                                           class="form-control" />
+                                           class="form-control
+                                    asp-format="{0:yyyy-MM-ddTHH:mm:ss}" />
 
                                     <span asp-validation-for="StartTime"
                                           class="text-danger">
@@ -132,7 +133,8 @@
 
                                     <input asp-for="EndTime"
                                            type="datetime-local"
-                                           class="form-control" />
+                                           class="form-control
+                                    asp-format="{0:yyyy-MM-ddTHH:mm:ss}" />
 
                                     <span asp-validation-for="EndTime"
                                           class="text-danger">

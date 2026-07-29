@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MotoShop.Data;
 
@@ -11,9 +12,11 @@ using MotoShop.Data;
 namespace MotoShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260729143058_AddPaymentModule")]
+    partial class AddPaymentModule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -464,20 +467,11 @@ namespace MotoShop.Data.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsSettled")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime?>("PaymentDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Remarks")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SettledById")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("SettlementDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -493,8 +487,6 @@ namespace MotoShop.Data.Migrations
                     b.HasIndex("AuctionId");
 
                     b.HasIndex("BuyerId");
-
-                    b.HasIndex("SettledById");
 
                     b.ToTable("Payments");
                 });
@@ -1001,16 +993,9 @@ namespace MotoShop.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("MotoShop.Data.ApplicationUser", "SettledBy")
-                        .WithMany()
-                        .HasForeignKey("SettledById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.Navigation("Auction");
 
                     b.Navigation("Buyer");
-
-                    b.Navigation("SettledBy");
                 });
 
             modelBuilder.Entity("MotoShop.Models.SellerProfile", b =>

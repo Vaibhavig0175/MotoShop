@@ -27,6 +27,7 @@ namespace MotoShop.Data
         public DbSet<Auction> Auctions { get; set; } = default!;
         public DbSet<Bid> Bids { get; set; } = default!;
         public DbSet<Notification> Notifications { get; set; } = default!;
+        public DbSet<Payment> Payments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -112,6 +113,24 @@ namespace MotoShop.Data
                 .HasOne(a => a.Winner)
                 .WithMany()
                 .HasForeignKey(a => a.WinnerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Payment>()
+                .HasOne(p => p.Auction)
+                .WithMany()
+                .HasForeignKey(p => p.AuctionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Payment>()
+                .HasOne(p => p.Buyer)
+                .WithMany()
+                .HasForeignKey(p => p.BuyerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Payment>()
+                .HasOne(p => p.SettledBy)
+                .WithMany()
+                .HasForeignKey(p => p.SettledById)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

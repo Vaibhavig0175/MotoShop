@@ -1,0 +1,149 @@
+﻿@model MotoShop.Models.Payment
+
+@{
+    ViewData["Title"] = "Pay Now";
+}
+
+<div class="container mt-4">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-primary text-white">
+
+                    <h4 class="mb-0">
+
+                        Payment Summary
+
+                    </h4>
+
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-bordered">
+
+                        <tr>
+
+                            <th width="35%">
+
+                                Vehicle
+
+                            </th>
+
+                            <td>
+
+                                @Model.Auction.Vehicle.VehicleBrand.Name
+                                @Model.Auction.Vehicle.VehicleModel.Name
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Auction Id
+
+                            </th>
+
+                            <td>
+
+                                #@Model.AuctionId
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Winning Bid
+
+                            </th>
+
+                            <td class="fw-bold text-success">
+
+                                ₹ @Model.Amount.ToString("N0")
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>
+
+                                Status
+
+                            </th>
+
+                            <td>
+
+                                <span class="badge bg-warning">
+
+                                    Pending
+
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                    </table>
+
+                    <hr />
+
+                    <div class="alert alert-info">
+
+                        <strong>
+
+                            Demo Payment
+
+                        </strong>
+
+                        <br />
+
+                        Clicking
+
+                        <b>Confirm Payment</b>
+
+                        will simulate a successful online payment.
+
+                    </div>
+
+                    <form asp-action="ConfirmPayment"
+                          method="post">
+
+                        <input type="hidden"
+                               name="id"
+                               value="@Model.Id" />
+
+                        <div class="d-grid">
+
+                            <button class="btn btn-success btn-lg">
+
+                                <i class="bi bi-credit-card"></i>
+
+                                Confirm Payment
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
