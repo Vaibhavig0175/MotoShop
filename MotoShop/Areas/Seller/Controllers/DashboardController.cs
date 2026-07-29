@@ -31,37 +31,39 @@ namespace MotoShop.Areas.Seller.Controllers
                 return Challenge();
 
             var vehicles = await _context.Vehicles
-                .Where(x => x.SellerId == seller.Id)
+                .Where(v => v.SellerId == seller.Id)
                 .ToListAsync();
 
             ViewBag.TotalVehicles = vehicles.Count;
 
-            ViewBag.PendingVehicles = vehicles.Count(x =>
-                x.Status == VehicleStatus.Pending);
+            ViewBag.PendingVehicles = vehicles.Count(v =>
+                v.Status == VehicleStatus.Pending);
 
-            ViewBag.ApprovedVehicles = vehicles.Count(x =>
-                x.Status == VehicleStatus.Approved);
+            ViewBag.ApprovedVehicles = vehicles.Count(v =>
+                v.Status == VehicleStatus.Approved);
 
-            ViewBag.RejectedVehicles = vehicles.Count(x =>
-                x.Status == VehicleStatus.Rejected);
+            ViewBag.RejectedVehicles = vehicles.Count(v =>
+                v.Status == VehicleStatus.Rejected);
 
             ViewBag.ActiveAuctions = await _context.Auctions
-                .CountAsync(x =>
-                    x.Vehicle.SellerId == seller.Id &&
-                    !x.IsClosed);
+                .Where(a =>
+                    a.Vehicle.SellerId == seller.Id &&
+                    a.Status == AuctionStatus.Live)
+                .CountAsync();
 
             ViewBag.SoldVehicles = await _context.Auctions
-                .CountAsync(x =>
-                    x.Vehicle.SellerId == seller.Id &&
-                    x.IsClosed &&
-                    x.WinnerId != null);
+                .Where(a =>
+                    a.Vehicle.SellerId == seller.Id &&
+                    a.Status == AuctionStatus.Closed &&
+                    a.WinnerId != null)
+                .CountAsync();
 
             ViewBag.TotalEarnings = await _context.Auctions
-                .Where(x =>
-                    x.Vehicle.SellerId == seller.Id &&
-                    x.IsClosed &&
-                    x.WinnerId != null)
-                .SumAsync(x => (decimal?)x.CurrentBid) ?? 0;
+                .Where(a =>
+                    a.Vehicle.SellerId == seller.Id &&
+                    a.Status == AuctionStatus.Closed &&
+                    a.WinnerId != null)
+                .SumAsync(a => (decimal?)a.CurrentBid) ?? 0;
 
             return View();
         }
